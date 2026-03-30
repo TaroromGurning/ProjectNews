@@ -107,7 +107,7 @@ const formatDate = (dateString) => {
             v-html="post.content_html"
           ></div>
 
-          <div class="mt-12 pt-6 border-t border-gray-100 dark:border-slate-800 flex items-center gap-3">
+          <div class="mt-12 pt-6 flex items-center gap-3">
             <span class="text-sm font-bold dark:text-white">Tags:</span>
             <div class="flex gap-2">
               <span v-for="tag in post.tags" :key="tag.slug" class="text-sm text-gray-400 hover:text-black dark:hover:text-white underline cursor-pointer">
@@ -117,12 +117,31 @@ const formatDate = (dateString) => {
               </span>
             </div>
           </div>
+
+          <div class="mt-20">
+            <div class="border-b border-gray-200 font-semibold font-poppins mb-8">
+              <p class="border-b-4 border-black w-fit text-xl lg:text-2xl -mb-0.5 py-2 dark:text-white dark:border-white">Up Next</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div v-for="next in latestNews.slice(0, 3)" :key="next.id" class="group cursor-pointer">
+                <div class="aspect-video rounded-3xl overflow-hidden mb-4 bg-gray-100">
+                  <img :src="next.featured_image" :alt="next.title" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2">
+                    {{ next.category?.name }} — {{ formatDate(next.published_at) }}
+                </p>
+                <NuxtLink :to="`/detail/${next.slug}`" class="font-bold text-gray-900 dark:text-white leading-snug line-clamp-2 text-lg">
+                  {{ next.title }}
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="hidden lg:block col-span-4">
-          <div class="border-b border-gray-200 dark:border-slate-800 mb-6 font-bold">
-            <h3 class="text-2xl pb-2 dark:text-white">Popular News</h3>
-          </div>
+          <div class="border-b border-gray-200 font-semibold font-poppins mb-8">
+          <p class="border-b-4 border-black w-fit text-xl lg:text-2xl -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
+        </div>
           <div class="space-y-8">
             <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group">
               <p class="text-gray-400 text-[10px] font-bold uppercase mb-1 tracking-widest">
@@ -132,23 +151,6 @@ const formatDate = (dateString) => {
                 {{ news.title }}
               </NuxtLink>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-20 border-t border-gray-100 dark:border-slate-800 pt-10">
-        <h3 class="text-3xl font-bold mb-8 dark:text-white">Up Next</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div v-for="next in latestNews.slice(0, 3)" :key="next.id" class="group cursor-pointer">
-            <div class="aspect-video rounded-3xl overflow-hidden mb-4 bg-gray-100">
-              <img :src="next.featured_image" :alt="next.title" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            </div>
-            <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2">
-                {{ next.category?.name }} — {{ formatDate(next.published_at) }}
-            </p>
-            <NuxtLink :to="`/detail/${next.slug}`" class="font-bold text-gray-900 dark:text-white leading-snug line-clamp-2 text-lg">
-              {{ next.title }}
-            </NuxtLink>
           </div>
         </div>
       </div>
