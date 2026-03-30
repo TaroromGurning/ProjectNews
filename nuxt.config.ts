@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: 'https://api.jovanews.kotasatelit.com/api/v1'
+      apiBase: ' '
     }
   }
 })
