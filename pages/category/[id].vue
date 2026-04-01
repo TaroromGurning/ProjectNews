@@ -89,7 +89,7 @@ const changePage = (page) => {
 </script>
 
 <template>
-  <div class="bg-white dark:bg-slate-950 min-h-screen">
+  <div class="bg-white dark:bg-slate-950">
     <div v-if="pending" class="flex justify-center py-20">
       <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-black dark:border-white"></div>
     </div>
@@ -118,22 +118,22 @@ const changePage = (page) => {
           </div>
 
           <div class="space-y-6">
-            <div v-for="post in categoryData.posts.data" :key="post.id" class="flex py-4 gap-4 border-b border-gray-50 dark:border-slate-900 last:border-0 items-center">
-              <div class="w-28 h-20 lg:w-40 lg:h-28 shrink-0 overflow-hidden rounded-xl">
-                <img :src="post.featured_image" :alt="post.title" class="w-full h-full object-cover hover:scale-105 transition duration-300">
-              </div>
-              <div class="flex flex-col">
-                <span class="text-gray-400 dark:text-white text-xs uppercase mb-1">
-                  {{ categoryData.category_info.name }} - {{ formatDate(post.published_at) }}
-                </span>
-                <NuxtLink :to="`/detail/${post.slug}`">
+            <div v-for="post in categoryData.posts.data" :key="post.id" class="border-b border-gray-50 dark:border-slate-900 last:border-0">
+              <NuxtLink :to="`/detail/${post.slug}`" class="flex py-4 gap-4 items-center group">
+                <div class="w-28 h-20 lg:w-40 lg:h-28 shrink-0 overflow-hidden rounded-xl">
+                  <img :src="post.featured_image" :alt="post.title" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-gray-400 dark:text-white text-xs uppercase mb-1">
+                    {{ categoryData.category_info.name }} - {{ formatDate(post.published_at) }}
+                  </span>
                   <h2 class="text-gray-900 dark:text-white font-semibold text-sm lg:text-xl leading-tight line-clamp-2">
                     {{ post.title }}
                   </h2>
-                </NuxtLink>
-                <p v-html="post.content_html" class="text-gray-500 dark:text-gray-400 text-xs mt-2 font-poppins line-clamp-3">
-                </p>
-              </div>
+                  <p v-html="post.content_html" class="text-gray-500 dark:text-gray-400 text-xs mt-2 font-poppins line-clamp-3">
+                  </p>
+                </div>
+              </NuxtLink>
             </div>
           </div>
 
@@ -184,22 +184,21 @@ const changePage = (page) => {
 
         <div class="hidden lg:block col-span-4">
             <div class="border-b border-gray-200 font-semibold font-poppins mb-6">
-                    <p class="border-b-4 border-gray-800 w-fit text-3xl -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
+              <p class="border-b-4 border-gray-800 w-fit text-3xl -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
+            </div>
+            <div class="mt-6 font-poppins space-y-6">
+                <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group cursor-pointer">
+                  <NuxtLink :to="`/detail/${news.slug}`">
+                    <p class="text-gray-400 text-xs mb-1 dark:text-gray-400">
+                    {{ news.category?.name }} — {{ formatDate(news.published_at) }}
+                    </p>
+                    <p class="text-black text-base font-medium line-clamp-2 transition-colors dark:text-white">
+                    {{ news.title }}
+                    </p>
+                  </NuxtLink>
                 </div>
-                <div class="mt-6 font-poppins space-y-6">
-                    <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group cursor-pointer">
-                      <NuxtLink :to="`/detail/${news.slug}`">
-                        <p class="text-gray-400 text-xs mb-1 dark:text-gray-400">
-                        {{ news.category?.name }} — {{ formatDate(news.published_at) }}
-                        </p>
-                        <p class="text-black text-base font-medium line-clamp-2 transition-colors dark:text-white">
-                        {{ news.title }}
-                        </p>
-                      </NuxtLink>
-                    </div>
-                </div>
+            </div>
         </div>
-
       </div>
     </div>
   </div>

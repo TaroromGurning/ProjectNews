@@ -37,7 +37,7 @@ const formatDate = (dateString) => {
 </script>
 
 <template>
-  <div class="bg-white dark:bg-slate-950 min-h-screen">
+  <div class="bg-white dark:bg-slate-950">
     <div v-if="!pending" class="container mx-auto px-4 lg:px-0"> 
       
       <div class="grid grid-cols-1 lg:grid-cols-12 py-8 lg:py-16 gap-8 lg:gap-10">
