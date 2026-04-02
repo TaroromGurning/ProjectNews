@@ -50,31 +50,87 @@ const formatDate = (dateString) => {
 }
 
 const displayedPages = computed(() => {
-  const total = paginationMeta.value?.last_page || 0
+  const total = data.value?.tagData?.posts?.last_page || 0
   const current = currentPage.value
   const pages = []
-  if (total <= 1) return [1]
+
   if (total <= 7) {
     for (let i = 1; i <= total; i++) pages.push(i)
   } else {
     if (current <= 4) {
-      pages.push(1, 2, 3, 4, 5, '...', total)
+      pages.push(1, 2, 3, 4, '...', total)
     } else if (current >= total - 3) {
-      pages.push(1, '...', total - 4, total - 3, total - 2, total - 1, total)
+      pages.push(1, '...', total - 3, total - 2, total - 1, total)
     } else {
       pages.push(1, '...', current - 1, current, current + 1, '...', total)
     }
   }
+
   return pages
 })
 
+const totalPages = computed(() => data.value?.tagData?.posts?.last_page || 0)
+
+const activeJumpIndex = ref(null)
+const jumpPageInput = ref('')
+const jumpBoxRef = ref(null)
+const jumpPageError = ref('')
+
+const closeJumpInput = () => {
+  activeJumpIndex.value = null
+  jumpPageInput.value = ''
+  jumpPageError.value = ''
+}
+
+const toggleJumpInput = (index) => {
+  activeJumpIndex.value = activeJumpIndex.value === index ? null : index
+  jumpPageInput.value = ''
+  jumpPageError.value = ''
+}
 const changePage = (page) => {
-  if (typeof page !== 'number') return
+  if (page < 1 || page > totalPages.value) return
+  if (page === currentPage.value) return
+
   currentPage.value = page
+  closeJumpInput()
+
   if (import.meta.client) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
+
+const jumpToPage = () => {
+  const pageNum = Number(jumpPageInput.value)
+
+  if (!Number.isInteger(pageNum)) {
+    jumpPageError.value = 'Masukkan angka yang valid'
+    return
+  }
+
+  if (pageNum < 1 || pageNum > totalPages.value) {
+    jumpPageError.value = `Masukkan angka 1 sampai ${totalPages.value}`
+    return
+  }
+
+  jumpPageError.value = ''
+  changePage(pageNum)
+}
+
+const handleClickOutside = (event) => {
+  if (!jumpBoxRef.value) return
+
+  if (!jumpBoxRef.value.contains(event.target)) {
+    closeJumpInput()
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <template>
@@ -112,12 +168,12 @@ const changePage = (page) => {
             </div>
           </div>
 
-          <div v-if="paginationMeta.last_page > 1" class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-10 pb-10 border-t border-gray-100 dark:border-slate-800 pt-8">  
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-10 pb-10 border-t border-gray-100 pt-8">   
             <div class="flex items-center gap-2">
               <button 
                 @click="changePage(currentPage - 1)"
                 :disabled="currentPage === 1"
-                class="w-10 h-10 flex items-center justify-center rounded-md border border-gray-200 disabled:opacity-30 dark:border-slate-800"
+                class="w-10 h-10 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 disabled:opacity-30 transition-all dark:border-slate-800 dark:text-gray-500"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -125,25 +181,50 @@ const changePage = (page) => {
               </button>
 
               <div class="flex items-center gap-2">
-                <template v-for="(page, index) in displayedPages" :key="index">
+                <div v-for="(page, index) in displayedPages" :key="index" class="relative flex flex-col items-center" :ref="page === '...' && activeJumpIndex === index ? (el) => (jumpBoxRef.value = el) : null">
                   <button
-                    v-if="page !== '...'"
-                    @click="changePage(page)"
-                    class="w-10 h-10 flex items-center justify-center rounded-md text-sm font-medium transition-all"
-                    :class="currentPage === page 
-                      ? 'bg-zinc-800 text-white dark:bg-white dark:text-black' 
-                      : 'border border-gray-200 text-gray-600 hover:border-black dark:border-slate-800 dark:text-gray-400'"
+                    @click.stop="page === '...' ? toggleJumpInput(index) : changePage(page)"
+                    :class="[
+                      'px-4 py-2 text-sm font-medium border rounded-lg transition-all duration-200',
+                      page !== '...' && Number(page) === currentPage
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-md'
+                        : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600',
+                      page === '...' ? 'cursor-pointer hover:bg-yellow-50' : ''
+                    ]"
+                    :title="page === '...' ? 'Lompat ke halaman' : ''"
                   >
                     {{ page }}
                   </button>
-                  <span v-else class="px-2 text-gray-400">...</span>
-                </template>
+
+                  <div v-if="page === '...' && activeJumpIndex === index" class="absolute top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-2 z-20"
+                    @click.stop>
+                    <div class="flex items-center gap-2">
+                      <input
+                        v-model="jumpPageInput"
+                        type="number"
+                        min="1"
+                        :max="totalPages"
+                        placeholder="Page"
+                        class="w-20 px-2 py-1 text-sm border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                        @keyup.enter="jumpToPage"
+                        @input="jumpPageError = ''"
+                      />
+                      <button @click="jumpToPage" class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        Go
+                      </button>
+                    </div>
+
+                    <p v-if="jumpPageError" class="mt-2 text-xs text-red-500">
+                      {{ jumpPageError }}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <button 
                 @click="changePage(currentPage + 1)"
                 :disabled="currentPage === paginationMeta.last_page"
-                class="w-10 h-10 flex items-center justify-center rounded-md border border-gray-200 disabled:opacity-30 dark:border-slate-800"
+                class="w-10 h-10 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 disabled:opacity-30 transition-all dark:border-slate-800 dark:text-gray-500"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

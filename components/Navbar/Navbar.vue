@@ -25,8 +25,8 @@ if (process.client) {
 </script>
 
 <template>
-  <div class="w-full">
-    <nav class="sticky top-0 z-50 border-b border-gray-200 bg-white dark:bg-slate-950">
+  <div class="sticky top-0 w-full z-50 border-b border-gray-200 bg-white dark:bg-slate-950">
+    <nav class="w-full">
       <div class="container mx-auto px-4 lg:px-0">
         <div class="flex items-center border-b border-gray-200 justify-between">
           <NuxtLink to="/" class="py-4">
