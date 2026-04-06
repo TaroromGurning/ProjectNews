@@ -44,7 +44,7 @@ const formatDate = (dateString) => {
         
         <div v-if="heroPost" class="col-span-1 lg:col-span-7 relative overflow-hidden rounded-2xl cursor-pointer group">
           <NuxtLink :to="`/detail/${heroPost.slug}`">
-          <img :src="heroPost.featured_image" :alt="heroPost.title" class="w-full h-75 lg:h-full object-cover block transition-transform duration-500 group-hover:scale-105">
+          <img :src="heroPost.featured_image || '/tes.png'" :alt="heroPost.title" class="w-full h-75 lg:h-full object-cover block transition-transform duration-500 group-hover:scale-105">
           <div class="absolute inset-0 p-6 lg:p-8 flex flex-col justify-between bg-linear-to-b from-black/20 via-transparent to-black/80">
             <span class="self-start text-white border border-white px-4 py-1.5 rounded-full text-xs lg:text-[12px] font-medium">
               {{ heroPost.category?.name }}
@@ -90,7 +90,7 @@ const formatDate = (dateString) => {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
           <div v-if="latestNews?.length > 0" class="md:col-span-2 lg:col-span-5 relative overflow-hidden rounded-2xl h-75 md:h-125 group cursor-pointer">
             <NuxtLink :to="`/detail/${latestNews?.[0]?.slug}`">
-            <img :src="latestNews?.[0]?.featured_image" :alt="latestNews?.[0]?.title" class="w-full h-full object-cover block transition-transform duration-500 group-hover:scale-110">
+            <img :src="latestNews?.[0]?.featured_image || '/tes.png'" :alt="latestNews?.[0]?.title" class="w-full h-full object-cover block transition-transform duration-500 group-hover:scale-110">
             <div class="absolute inset-0 p-6 flex flex-col justify-between bg-linear-to-b from-black/20 via-transparent to-black/80">
               <span class="self-start text-white border border-white px-3 py-1 rounded-full text-xs font-medium">
                 {{ latestNews?.[0]?.category?.name }}
@@ -108,7 +108,7 @@ const formatDate = (dateString) => {
           <div class="md:col-span-2 lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
             <div v-for="news in latestNews?.slice(1, 4)" :key="news.id" class="relative overflow-hidden rounded-2xl h-55 group cursor-pointer">
               <NuxtLink :to="`/detail/${news.slug}`">
-              <img :src="news.featured_image" :alt="news.title" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+              <img :src="news.featured_image || '/tes.png'" :alt="news.title" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
               <div class="absolute inset-0 p-5 flex flex-col justify-between bg-linear-to-t from-black/90 via-black/30 to-transparent">
                 <span class="self-start text-white border border-white/50 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-medium">
                   {{ news.category?.name }}
@@ -138,7 +138,7 @@ const formatDate = (dateString) => {
             <NuxtLink v-for="post in block.posts" :key="post.id" :to="`/detail/${post.slug}`" class="flex gap-4 items-start group cursor-pointer">
               
               <div class="w-24 h-20 shrink-0 overflow-hidden rounded-xl">
-                <img :src="post.featured_image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-cover group-hover:scale-110 transition-transform">
               </div>
               <div class="flex flex-col">
                 <p class="text-gray-500 text-[12px] mb-1 dark:text-gray-400">

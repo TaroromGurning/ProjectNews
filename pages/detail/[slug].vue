@@ -153,7 +153,7 @@ const copyLink = () => {
           </div>
 
           <div class="mt-8 w-full aspect-video overflow-hidden rounded-[2.5rem] bg-gray-100">
-            <img :src="post.featured_image" :alt="post.title" class="w-full h-full object-cover shadow-lg">
+            <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-cover shadow-lg">
           </div>
 
           <div v-html="post.content_html" 
@@ -179,7 +179,7 @@ const copyLink = () => {
               <div v-for="next in latestNews.slice(0, 3)" :key="next.id" class="group cursor-pointer">
                 <NuxtLink :to="`/detail/${next.slug}`">
                 <div class="aspect-video rounded-3xl overflow-hidden mb-4 bg-gray-100">
-                  <img :src="next.featured_image" :alt="next.title" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                  <img :src="next.featured_image || '/tes.png'" :alt="next.title" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                 </div>
                 <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2">
                     {{ next.category?.name }} — {{ formatDate(next.published_at) }}

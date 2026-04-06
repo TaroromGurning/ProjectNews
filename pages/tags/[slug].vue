@@ -3,13 +3,22 @@ const route = useRoute()
 const api = useApi()
 
 const Slug = computed(() => String(route.params.slug || ''))
-const currentPage = ref(1)
-
-watch(Slug, () => {
-  currentPage.value = 1
+const currentPage = computed(() => {
+  const page = Number(route.query.page || 1)
+  return Number.isInteger(page) && page > 0 ? page : 1
 })
 
-const { data, pending } = await useAsyncData(
+watch(Slug, async () => {
+  await navigateTo(
+    {
+      path: route.path,
+      query: {}
+    },
+    { replace: true }
+  )
+})
+
+const { data, pending, refresh } = await useAsyncData(
   () => `tag-${Slug.value}-page-${currentPage.value}`,
   async () => {
     const [tagRes, homeRes] = await Promise.all([
@@ -49,8 +58,10 @@ const formatDate = (dateString) => {
   })
 }
 
+const totalPages = computed(() => paginationMeta.value.last_page || 1)
+
 const displayedPages = computed(() => {
-  const total = data.value?.tagData?.posts?.last_page || 0
+  const total = totalPages.value
   const current = currentPage.value
   const pages = []
 
@@ -69,7 +80,6 @@ const displayedPages = computed(() => {
   return pages
 })
 
-const totalPages = computed(() => data.value?.tagData?.posts?.last_page || 0)
 
 const activeJumpIndex = ref(null)
 const jumpPageInput = ref('')
@@ -87,19 +97,34 @@ const toggleJumpInput = (index) => {
   jumpPageInput.value = ''
   jumpPageError.value = ''
 }
-const changePage = (page) => {
-  if (page < 1 || page > totalPages.value) return
-  if (page === currentPage.value) return
+const changePage = async (page) => {
+  const maxPage = totalPages.value
 
-  currentPage.value = page
+  if (!Number.isInteger(page)) return
+  if (page < 1 || page > maxPage) return
+  if (page === currentPage.value) {
+    closeJumpInput()
+    return
+  }
+
   closeJumpInput()
+
+  await navigateTo(
+    {
+      path: route.path,
+      query: page === 1 ? {} : { ...route.query, page }
+    },
+    { replace: true }
+  )
+
+  await refresh()
 
   if (import.meta.client) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
 
-const jumpToPage = () => {
+const jumpToPage = async () => {
   const pageNum = Number(jumpPageInput.value)
 
   if (!Number.isInteger(pageNum)) {
@@ -113,13 +138,15 @@ const jumpToPage = () => {
   }
 
   jumpPageError.value = ''
-  changePage(pageNum)
+  await changePage(pageNum)
 }
 
 const handleClickOutside = (event) => {
   if (!jumpBoxRef.value) return
 
-  if (!jumpBoxRef.value.contains(event.target)) {
+  const isClickInside = jumpBoxRef.value.contains(event.target)
+
+  if (!isClickInside) {
     closeJumpInput()
   }
 }
@@ -153,7 +180,7 @@ onBeforeUnmount(() => {
             <div v-for="post in posts" :key="post.id" class="border-b border-gray-50 dark:border-slate-900 last:border-0">
               <NuxtLink :to="`/detail/${post.slug}`" class="flex py-4 gap-4 items-center group">
                 <div class="w-28 h-20 lg:w-40 lg:h-28 shrink-0 overflow-hidden rounded-xl">
-                  <img :src="post.featured_image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                  <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 </div>
                 <div class="flex flex-col">
                   <span class="text-gray-400 dark:text-gray-500 text-xs uppercase mb-1">

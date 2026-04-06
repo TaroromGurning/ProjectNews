@@ -175,7 +175,6 @@ onBeforeUnmount(() => {
 
     <div v-else-if="categoryData" class="container mx-auto pt-8 px-4 lg:px-0">
       <div class="grid grid-cols-12 gap-8">
-        
         <div class="col-span-12 lg:col-span-8">
           <div class="border-b border-gray-200 font-semibold font-poppins">
             <h1 class="border-b-4 border-black w-fit text-xl lg:text-3xl -mb-0.5 py-2 dark:text-white dark:border-white capitalize">
@@ -199,7 +198,7 @@ onBeforeUnmount(() => {
             <div v-for="post in categoryData.posts.data" :key="post.id" class="border-b border-gray-50 dark:border-slate-900 last:border-0">
               <NuxtLink :to="`/detail/${post.slug}`" class="flex py-4 gap-4 items-center group overflow-hidden">
                 <div class="w-28 h-20 lg:w-40 lg:h-28 shrink-0 overflow-hidden rounded-xl">
-                  <img :src="post.featured_image" :alt="post.title" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                  <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-cover hover:scale-105 transition duration-300">
                 </div>
                 <div class="flex flex-col min-w-0">
                   <span class="text-gray-400 dark:text-white text-xs uppercase mb-1">
