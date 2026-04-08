@@ -3,11 +3,12 @@ const route = useRoute()
 const api = useApi()
 
 const slug = computed(() => String(route.params.slug || ''))
+const id = computed(() => Number(route.params.id || 0))
 
 const { data, pending } = await useAsyncData(
-  () => `post-${slug.value}`,
+  () => `post-${slug.value}-${id.value}`,
   async () => {
-    const detailRes = await api(`/posts/${slug.value}`)
+    const detailRes = await api(`/posts/${slug.value}/${id.value}`)
     const homeRes = await api('/home')
 
     const post = detailRes?.data?.post
@@ -24,12 +25,12 @@ const { data, pending } = await useAsyncData(
       seo: detailRes?.data?.seo || {},
       popularNews: homeRes?.data?.popular_news || [],
       latestNews: (homeRes?.data?.latest_news || []).filter(
-        item => item.slug !== slug.value
+        item => item.slug !== slug.value && item.id !== id.value
       )
     }
   },
   {
-    watch: [slug]
+    watch: [slug, id]
   }
 )
 
@@ -99,13 +100,11 @@ const copyLink = () => {
 </script>
 
 <template>
-  <div class="bg-white dark:bg-slate-950 min-h-screen pb-20 font-poppins">
-    
+  <div class="container mx-auto pb-20 font-poppins">
     <div v-if="pending" class="flex justify-center py-40">
       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
     </div>
-
-    <div v-else-if="post && post.id" class="container mx-auto pt-8 px-4 lg:px-0">
+    <div v-else-if="post && post.id" class="pt-8 px-4 lg:px-8">
       <div class="grid grid-cols-12 gap-8 lg:gap-12">
         
         <div class="col-span-12 lg:col-span-8">
@@ -121,11 +120,11 @@ const copyLink = () => {
           </div>
 
           <div class="flex justify-between gap-2 mt-4 h-9">
-            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-black text-white">
+            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-black text-white dark:bg-white dark:text-black">
               {{ post.category?.name || 'Tanpa Kategori' }}
             </span>
             <div class="relative flex gap-2">
-              <button @click="copyLink" class="px-2 border rounded-md dark:text-white dark:border-slate-700 text-xs hover:bg-gray-50 dark:hover:bg-slate-800 z-50 transition">
+              <button @click="copyLink" class="px-2 border rounded-md dark:text-white dark:border-slate-700 text-xs hover:bg-gray-50 dark:hover:bg-slate-800 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                   <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
@@ -157,7 +156,7 @@ const copyLink = () => {
           </div>
 
           <div v-html="post.content_html" 
-            class="mt-10 prose prose-lg text-[16px] dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-relaxed">
+            class="mt-10 prose prose-lg text-[16px] dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-relaxed wrap-break-word">
           </div>
 
           <div class="mt-12 pt-6 flex items-center gap-3">
@@ -177,7 +176,7 @@ const copyLink = () => {
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div v-for="next in latestNews.slice(0, 3)" :key="next.id" class="group cursor-pointer">
-                <NuxtLink :to="`/detail/${next.slug}`">
+                <NuxtLink :to="`/detail/${next.slug}/${next.id}`">
                 <div class="aspect-video rounded-3xl overflow-hidden mb-4 bg-gray-100">
                   <img :src="next.featured_image || '/tes.png'" :alt="next.title" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                 </div>
@@ -193,13 +192,13 @@ const copyLink = () => {
           </div>
         </div>
 
-        <div class="hidden lg:block col-span-4">
+        <div class="col-span-12 lg:col-span-4 pb-20 sm:flex-col">
           <div class="border-b border-gray-200 font-semibold font-poppins mb-8">
           <p class="border-b-4 border-black w-fit text-xl lg:text-2xl -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
         </div>
           <div class="space-y-8">
             <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group">
-              <NuxtLink :to="`/detail/${news.slug}`">
+              <NuxtLink :to="`/detail/${news.slug}/${news.id}`">
                 <p class="text-gray-400 text-[10px] font-bold uppercase mb-1 tracking-widest">
                   {{ news.category?.name }} — {{ formatDate(news.published_at) }}
                 </p>

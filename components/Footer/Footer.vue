@@ -38,8 +38,8 @@ onBeforeUnmount(() => {
 
 <template>
   <footer class="bg-black">
-    <div class="container mx-auto py-12 px-4 md:px-0">
-      <div class="flex flex-col lg:flex-row items-center justify-between border-b border-gray-50 text-white pb-4 lg:pb-0">
+    <div class="container mx-auto py-12 px-4 lg:px-8">
+      <div class="flex flex-col lg:flex-row items-center justify-between border-b border-gray-50 text-white pb-4">
         <div class="flex items-center">
           <NuxtLink to="/" class="py-4">
             <h1 class="text-2xl font-inika">CMS Template</h1>
@@ -53,8 +53,8 @@ onBeforeUnmount(() => {
                 <div class="flex items-center gap-1">
                   <NuxtLink
                     :to="`/category/${cat.slug}`"
-                    class="hover:text-blue-600 transition capitalize py-1"
-                    active-class="text-blue-600 font-bold"
+                    class="hover:text-blue-600 dark:hover:text-yellow-400 transition capitalize py-1"
+                    active-class="text-blue-600 dark:text-yellow-400 font-bold"
                     @click.stop="closeCategory"
                   >
                     {{ cat.name }}
@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
                     v-for="sub in cat.sub_categories"
                     :key="sub.slug"
                     :to="`/category/${sub.slug}`"
-                    class="block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-blue-600 transition"
+                    class="block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-blue-600 dark:hover:text-yellow-400 transition"
                     @click="closeCategory"
                   >
                     {{ sub.name }}
@@ -118,7 +118,7 @@ onBeforeUnmount(() => {
                     v-for="sub in cat.sub_categories"
                     :key="sub.slug"
                     :to="`/category/${sub.slug}`"
-                    class="block px-4 py-2 text-xs text-black dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-blue-600 transition"
+                    class="block px-4 py-2 text-xs text-black dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-yellow-400 transition"
                   >
                     {{ sub.name }}
                   </NuxtLink>
@@ -129,8 +129,8 @@ onBeforeUnmount(() => {
             <NuxtLink
               v-else
               :to="`/category/${cat.slug}`"
-              class="hover:text-blue-600 transition capitalize flex items-center gap-1 py-1"
-              active-class="text-blue-600 font-bold"
+              class="hover:text-blue-600 dark:hover:text-yellow-400 transition capitalize flex items-center gap-1 py-1"
+              active-class="text-blue-600 dark:text-yellow-400 font-bold"
             >
               {{ cat.name }}
             </NuxtLink>

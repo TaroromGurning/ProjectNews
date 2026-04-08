@@ -2,7 +2,7 @@
 const route = useRoute()
 const api = useApi()
 
-const categorySlug = computed(() => String(route.params.id || ''))
+const categorySlug = computed(() => String(route.params.slug || ''))
 const currentPage = computed(() => {
   const page = Number(route.query.page || 1)
   return Number.isInteger(page) && page > 0 ? page : 1
@@ -168,12 +168,12 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="bg-white dark:bg-slate-950">
+  <div class="container mx-auto">
     <div v-if="pending" class="flex justify-center py-20">
       <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-black dark:border-white"></div>
     </div>
 
-    <div v-else-if="categoryData" class="container mx-auto pt-8 px-4 lg:px-0">
+    <div v-else-if="categoryData" class="pt-8 px-4 lg:px-8">
       <div class="grid grid-cols-12 gap-8">
         <div class="col-span-12 lg:col-span-8">
           <div class="border-b border-gray-200 font-semibold font-poppins">
@@ -196,12 +196,12 @@ onBeforeUnmount(() => {
 
           <div class="space-y-6">
             <div v-for="post in categoryData.posts.data" :key="post.id" class="border-b border-gray-50 dark:border-slate-900 last:border-0">
-              <NuxtLink :to="`/detail/${post.slug}`" class="flex py-4 gap-4 items-center group overflow-hidden">
+              <NuxtLink :to="`/detail/${post.slug}/${post.id}`" class="flex py-4 gap-4 items-center group overflow-hidden">
                 <div class="w-28 h-20 lg:w-40 lg:h-28 shrink-0 overflow-hidden rounded-xl">
                   <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-cover hover:scale-105 transition duration-300">
                 </div>
                 <div class="flex flex-col min-w-0">
-                  <span class="text-gray-400 dark:text-white text-xs uppercase mb-1">
+                  <span class="text-gray-400 dark:text-white text-xs mb-1">
                     {{ categoryData.category_info.name }} - {{ formatDate(post.published_at) }}
                   </span>
                   <h2 class="text-gray-900 dark:text-white font-semibold text-sm lg:text-xl line-clamp-2 wrap-break-word">
@@ -233,8 +233,8 @@ onBeforeUnmount(() => {
                     :class="[
                       'px-4 py-2 text-sm font-medium border rounded-lg transition-all duration-200',
                       page !== '...' && Number(page) === currentPage
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-md'
-                        : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600',
+                        ? 'bg-blue-600 dark:bg-yellow-400 text-white border-blue-600 dark:border-white shadow-md'
+                        : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 dark:hover:border-yellow-400 hover:text-blue-600 dark:hover:text-yellow-400',
                       page === '...' ? 'cursor-pointer hover:bg-yellow-50' : ''
                     ]"
                     :title="page === '...' ? 'Lompat ke halaman' : ''"
@@ -251,11 +251,11 @@ onBeforeUnmount(() => {
                         min="1"
                         :max="totalPages"
                         placeholder="Page"
-                        class="w-20 px-2 py-1 text-sm border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                        class="w-20 px-2 py-1 text-sm border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400"
                         @keyup.enter="jumpToPage"
                         @input="jumpPageError = ''"
                       />
-                      <button @click="jumpToPage" class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                      <button @click="jumpToPage" class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:hover:bg-yellow-500 dark:bg-yellow-400">
                         Go
                       </button>
                     </div>
@@ -284,13 +284,13 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div class="hidden lg:block col-span-4">
+        <div class="col-span-12 lg:col-span-4 pb-20 sm:flex-col">
             <div class="border-b border-gray-200 font-semibold font-poppins mb-6">
               <p class="border-b-4 border-gray-800 w-fit text-3xl -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
             </div>
             <div class="mt-6 font-poppins space-y-8">
                 <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group cursor-pointer">
-                  <NuxtLink :to="`/detail/${news.slug}`" class="block">
+                  <NuxtLink :to="`/detail/${news.slug}/${news.id}`" class="block">
                     <p class="text-gray-400 text-xs mb-1 dark:text-gray-400">
                     {{ news.category?.name }} — {{ formatDate(news.published_at) }}
                     </p>
