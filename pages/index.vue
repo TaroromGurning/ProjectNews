@@ -40,7 +40,7 @@ const formatDate = (dateString) => {
   <div class="container mx-auto">
     <div v-if="!pending" class="px-4 lg:px-8"> 
       <div class="grid grid-cols-1 lg:grid-cols-12 py-8 lg:py-16 gap-8 lg:gap-10">
-        <div v-if="heroPost" class="col-span-1 lg:col-span-7 relative overflow-hidden rounded-2xl cursor-pointer group">
+        <div v-if="heroPost" class="col-span-1 lg:col-span-7 h-96 relative overflow-hidden rounded-2xl cursor-pointer group">
           <NuxtLink :to="`/detail/${heroPost.slug}/${heroPost.id}`">
           <img :src="heroPost.featured_image || '/tes.png'" :alt="heroPost.title" class="w-full h-full object-cover block transition-transform duration-500 group-hover:scale-105">
           <div class="absolute inset-0 p-6 lg:p-8 flex flex-col justify-between bg-linear-to-b from-black/20 via-transparent to-black/80">
@@ -65,7 +65,7 @@ const formatDate = (dateString) => {
           </div>
           
           <div class="mt-6 font-poppins space-y-6"> 
-            <div v-for="news in popularNews?.slice(0, 5)" :key="news.id" class="group cursor-pointer">
+            <div v-for="news in popularNews?.slice(0, 4)" :key="news.id" class="group cursor-pointer">
               <NuxtLink :to="`/detail/${news.slug}/${news.id}`" class="block">
               <p class="text-gray-400 text-xs mb-1 dark:text-gray-400">
                 {{ news.category?.name }} — {{ formatDate(news.published_at) }}

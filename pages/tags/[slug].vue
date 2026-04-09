@@ -158,6 +158,11 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
+
+const cleanContent = (html) => {
+  if (!html) return ''
+  return html.replace(/<img[^>]*>/g, '')
+}
 </script>
 
 <template>
@@ -183,13 +188,13 @@ onBeforeUnmount(() => {
                   <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 </div>
                 <div class="flex flex-col min-w-0">
-                  <span class="text-gray-400 dark:text-gray-500 text-xs uppercase mb-1">
+                  <span class="text-gray-400 dark:text-gray-500 text-xs mb-1">
                     {{ post.category?.name }} - {{ formatDate(post.published_at) }}
                   </span>
                   <h2 class="text-gray-900 dark:text-white font-semibold text-sm lg:text-xl leading-tight line-clamp-2">
                     {{ post.title }}
                   </h2>
-                  <div v-if="post.content_html" v-html="post.content_html" class="text-gray-500 dark:text-gray-400 text-xs mt-2 font-poppins line-clamp-2"></div>
+                  <div v-if="post.content_html" v-html="cleanContent(post.content_html)" class="text-gray-500 dark:text-gray-400 text-xs mt-2 font-poppins line-clamp-2"></div>
                 </div>
               </NuxtLink>
             </div>
@@ -214,8 +219,8 @@ onBeforeUnmount(() => {
                     :class="[
                       'px-4 py-2 text-sm font-medium border rounded-lg transition-all duration-200',
                       page !== '...' && Number(page) === currentPage
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-md'
-                        : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600',
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-md dark:bg-yellow-400 dark:border-white'
+                        : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600 dark:hover:border-yellow-400 dark:hover:text-yellow-400',
                       page === '...' ? 'cursor-pointer hover:bg-yellow-50' : ''
                     ]"
                     :title="page === '...' ? 'Lompat ke halaman' : ''"
@@ -232,11 +237,11 @@ onBeforeUnmount(() => {
                         min="1"
                         :max="totalPages"
                         placeholder="Page"
-                        class="w-20 px-2 py-1 text-sm border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                        class="w-20 px-2 py-1 text-sm border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400"
                         @keyup.enter="jumpToPage"
                         @input="jumpPageError = ''"
                       />
-                      <button @click="jumpToPage" class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                      <button @click="jumpToPage" class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:bg-yellow-400 dark:hover:bg-yellow-500 transition-all">
                         Go
                       </button>
                     </div>

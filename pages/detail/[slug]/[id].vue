@@ -151,11 +151,11 @@ const copyLink = () => {
             </div>
           </div>
 
-          <div class="mt-8 w-full aspect-video overflow-hidden rounded-[2.5rem] bg-gray-100">
-            <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-cover shadow-lg">
+          <div class="mt-8 w-full overflow-hidden">
+            <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-50% h-50% block object-cover shadow-lg">
           </div>
 
-          <div v-html="post.content_html" 
+          <div v-html="post.content_html"
             class="mt-10 prose prose-lg text-[16px] dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-relaxed wrap-break-word">
           </div>
 
@@ -230,6 +230,13 @@ const copyLink = () => {
 </template>
 
 <style scoped>
-.prose :deep(p) { margin-bottom: 1.5rem; }
-.prose :deep(img) { border-radius: 1.5rem; margin: 2.5rem 0; }
+.prose :deep(p) { 
+  margin-bottom: 1.5rem; 
+}
+.prose :deep(img) { 
+  border-radius: 1.5rem; 
+  margin: 2.5rem 0;
+  max-width: 30%;
+  max-height: 30%;
+  }
 </style>

@@ -165,6 +165,11 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
+
+const cleanupHtml = (html) => {
+  if (!html) return ''
+  return html.replace(/<img[^>]*>/g, '')
+}
 </script>
 
 <template>
@@ -207,7 +212,7 @@ onBeforeUnmount(() => {
                   <h2 class="text-gray-900 dark:text-white font-semibold text-sm lg:text-xl line-clamp-2 wrap-break-word">
                     {{ post.title }}
                   </h2>
-                  <div v-html="post.content_html" class="text-gray-500 dark:text-gray-400 text-xs mt-2 font-poppins line-clamp-3">
+                  <div v-html="cleanupHtml(post.content_html)" class="text-gray-500 dark:text-gray-400 text-xs mt-2 font-poppins line-clamp-3">
                   </div>
                 </div>
               </NuxtLink>
@@ -305,4 +310,3 @@ onBeforeUnmount(() => {
     </div>
   </div>
 </template>
-
