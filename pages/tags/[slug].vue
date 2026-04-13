@@ -158,11 +158,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
-
-const cleanContent = (html) => {
-  if (!html) return ''
-  return html.replace(/<img[^>]*>/g, '')
-}
 </script>
 
 <template>
@@ -176,28 +171,48 @@ const cleanContent = (html) => {
         
         <div class="col-span-12 lg:col-span-8">
           <div class="border-b border-gray-200 dark:border-slate-800 font-semibold font-poppins">
-            <h1 class="border-b-4 border-black w-fit text-xl lg:text-3xl -mb-0.5 py-2 dark:text-white dark:border-white capitalize">
+            <h1 class="border-b-4 border-black w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white capitalize">
               Tag: {{ tagInfo.name }}
             </h1>
           </div>
 
-          <div class="space-y-6 mt-8">
+          <div v-if="posts.length > 0" class="space-y-6 mt-8">
             <div v-for="post in posts" :key="post.id" class="border-b border-gray-50 dark:border-slate-900 last:border-0">
               <NuxtLink :to="`/detail/${post.slug}/${post.id}`" class="flex py-4 gap-4 items-center group">
-                <div class="w-28 h-20 lg:w-40 lg:h-28 shrink-0 overflow-hidden rounded-xl">
-                  <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                <div class="w-28 h-20 lg:w-[269px] lg:h-[180px] shrink-0 overflow-hidden rounded-xl">
+                  <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-contain group-hover:scale-105 transition duration-300">
                 </div>
                 <div class="flex flex-col min-w-0">
-                  <span class="text-gray-400 dark:text-gray-500 text-xs mb-1">
+                  <span class="text-[#555555] dark:text-gray-300 text-[14px] mb-1">
                     {{ post.category?.name }} - {{ formatDate(post.published_at) }}
                   </span>
-                  <h2 class="text-gray-900 dark:text-white font-semibold text-sm lg:text-xl leading-tight line-clamp-2">
+                  <h2 class="text-gray-900 dark:text-white font-medium text-sm lg:text-xl leading-tight line-clamp-2">
                     {{ post.title }}
                   </h2>
-                  <div v-if="post.content_html" v-html="cleanContent(post.content_html)" class="text-gray-500 dark:text-gray-400 text-xs mt-2 font-poppins line-clamp-2"></div>
+                  <div class="text-[#555555] dark:text-gray-400 text-[16px] mt-2 font-poppins line-clamp-2">
+                    {{ post.short_description }}
+                  </div>
                 </div>
               </NuxtLink>
             </div>
+          </div>
+
+          <div v-else class="flex flex-col items-center justify-center py-20 text-center">
+            <div class="bg-gray-100 dark:bg-slate-800 p-6 rounded-full mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 8v4h4" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              Tidak ada berita yang terkait
+            </h3>
+            <p class="text-gray-500 dark:text-gray-400 mt-2">
+              Maaf, saat ini belum ada konten yang tersedia di tag ini.
+            </p>
+            <NuxtLink to="/" class="mt-6 px-6 py-2 bg-black text-white dark:bg-white dark:text-black rounded-full hover:opacity-80 transition">
+              Kembali ke Beranda
+            </NuxtLink>
           </div>
 
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-10 pb-10 border-t border-gray-100 pt-8">   
@@ -219,7 +234,7 @@ const cleanContent = (html) => {
                     :class="[
                       'px-4 py-2 text-sm font-medium border rounded-lg transition-all duration-200',
                       page !== '...' && Number(page) === currentPage
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-md dark:bg-yellow-400 dark:border-white'
+                        ? 'bg-black text-white border-gray-500 dark:border-white shadow-md dark:bg-yellow-400'
                         : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600 dark:hover:border-yellow-400 dark:hover:text-yellow-400',
                       page === '...' ? 'cursor-pointer hover:bg-yellow-50' : ''
                     ]"
@@ -277,17 +292,16 @@ const cleanContent = (html) => {
           <div class="mt-6 font-poppins space-y-6">
             <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group">
               <NuxtLink :to="`/detail/${news.slug}/${news.id}`" class="block">
-                <p class="text-gray-400 text-xs mb-1 dark:text-gray-500">
+                <p class="text-[#555555] text-[14px] mb-1 dark:text-gray-300">
                   {{ news.category?.name }} — {{ formatDate(news.published_at) }}
                 </p>
-                <p class="text-black text-base font-medium line-clamp-2 group-hover:text-blue-600 transition dark:text-white">
+                <p class="text-black text-base font-medium line-clamp-2 transition dark:text-white">
                   {{ news.title }}
                 </p>
               </NuxtLink>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>

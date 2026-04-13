@@ -48,7 +48,7 @@ onBeforeUnmount(() => {
 
         <div class="flex flex-wrap justify-center items-center gap-4 lg:gap-8 py-4 font-poppins text-sm">
           <div v-for="cat in categories" :key="cat.slug" class="group relative flex items-center shrink-0">
-            <template v-if="cat.sub_categories?.length > 0">
+            <div v-if="cat.sub_categories?.length > 0">
               <div class="relative">
                 <div class="flex items-center gap-1">
                   <NuxtLink
@@ -124,7 +124,7 @@ onBeforeUnmount(() => {
                   </NuxtLink>
                 </div>
               </div>
-            </template>
+            </div>
 
             <NuxtLink
               v-else

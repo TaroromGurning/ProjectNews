@@ -165,11 +165,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
-
-const cleanupHtml = (html) => {
-  if (!html) return ''
-  return html.replace(/<img[^>]*>/g, '')
-}
 </script>
 
 <template>
@@ -182,7 +177,7 @@ const cleanupHtml = (html) => {
       <div class="grid grid-cols-12 gap-8">
         <div class="col-span-12 lg:col-span-8">
           <div class="border-b border-gray-200 font-semibold font-poppins">
-            <h1 class="border-b-4 border-black w-fit text-xl lg:text-3xl -mb-0.5 py-2 dark:text-white dark:border-white capitalize">
+            <h1 class="border-b-4 border-black w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white capitalize">
               {{ categoryData.category_info.name }}
             </h1>
           </div>
@@ -192,31 +187,50 @@ const cleanupHtml = (html) => {
               v-for="sub in categoryData.sub_categories" 
               :key="sub.slug"
               class="px-4 py-1.5 rounded-full border text-sm transition font-poppins"
-              :class="sub.slug === categorySlug ? 'bg-black text-white' : 'bg-transparent text-gray-600 border-gray-200 dark:text-white dark:border-gray-700'">
+              :class="sub.slug === categorySlug ? 'bg-black text-white' : 'bg-transparent text-gray-600 border-black dark:text-white dark:border-gray-700'">
               <NuxtLink :to="`/category/${sub.slug}`">
                 {{ sub.name }}
               </NuxtLink>
             </button>
           </div>
 
-          <div class="space-y-6">
+          <div v-if="categoryData.posts.data.length > 0" class="space-y-6 font-poppins">
             <div v-for="post in categoryData.posts.data" :key="post.id" class="border-b border-gray-50 dark:border-slate-900 last:border-0">
               <NuxtLink :to="`/detail/${post.slug}/${post.id}`" class="flex py-4 gap-4 items-center group overflow-hidden">
-                <div class="w-28 h-20 lg:w-40 lg:h-28 shrink-0 overflow-hidden rounded-xl">
-                  <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                <div class="w-28 h-20 lg:w-[269px] lg:h-[180px] shrink-0 overflow-hidden rounded-xl">
+                  <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-contain hover:scale-105 transition duration-300">
                 </div>
                 <div class="flex flex-col min-w-0">
-                  <span class="text-gray-400 dark:text-white text-xs mb-1">
+                  <span class="text-[#555555] dark:text-white text-[14px] mb-1">
                     {{ categoryData.category_info.name }} - {{ formatDate(post.published_at) }}
                   </span>
-                  <h2 class="text-gray-900 dark:text-white font-semibold text-sm lg:text-xl line-clamp-2 wrap-break-word">
+                  <h2 class="text-gray-900 dark:text-white font-medium text-sm lg:text-xl line-clamp-2 wrap-break-word">
                     {{ post.title }}
                   </h2>
-                  <div v-html="cleanupHtml(post.content_html)" class="text-gray-500 dark:text-gray-400 text-xs mt-2 font-poppins line-clamp-3">
+                  <div class="text-[#555555] dark:text-gray-400 text-[16px] mt-2 font-poppins line-clamp-3">
+                    {{ post.short_description }}
                   </div>
                 </div>
               </NuxtLink>
             </div>
+          </div>
+
+          <div v-else class="flex flex-col items-center justify-center py-20 text-center">
+            <div class="bg-gray-100 dark:bg-slate-800 p-6 rounded-full mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 8v4h4" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              Tidak ada berita yang terkait
+            </h3>
+            <p class="text-gray-500 dark:text-gray-400 mt-2">
+              Maaf, saat ini belum ada konten yang tersedia di kategori ini.
+            </p>
+            <NuxtLink to="/" class="mt-6 px-6 py-2 bg-black text-white dark:bg-white dark:text-black rounded-full hover:opacity-80 transition">
+              Kembali ke Beranda
+            </NuxtLink>
           </div>
 
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-10 pb-10 border-t border-gray-100 pt-8">  
@@ -238,7 +252,7 @@ const cleanupHtml = (html) => {
                     :class="[
                       'px-4 py-2 text-sm font-medium border rounded-lg transition-all duration-200',
                       page !== '...' && Number(page) === currentPage
-                        ? 'bg-blue-600 dark:bg-yellow-400 text-white border-blue-600 dark:border-white shadow-md'
+                        ? 'bg-black dark:bg-yellow-400 text-white border-gray-500 dark:border-white shadow-md'
                         : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 dark:hover:border-yellow-400 hover:text-blue-600 dark:hover:text-yellow-400',
                       page === '...' ? 'cursor-pointer hover:bg-yellow-50' : ''
                     ]"
@@ -296,8 +310,8 @@ const cleanupHtml = (html) => {
             <div class="mt-6 font-poppins space-y-8">
                 <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group cursor-pointer">
                   <NuxtLink :to="`/detail/${news.slug}/${news.id}`" class="block">
-                    <p class="text-gray-400 text-xs mb-1 dark:text-gray-400">
-                    {{ news.category?.name }} — {{ formatDate(news.published_at) }}
+                    <p class="text-[#555555] text-[14px] mb-1 dark:text-gray-300">
+                    {{ news.category?.name }} - {{ formatDate(news.published_at) }}
                     </p>
                     <p class="text-black text-base font-medium line-clamp-2 transition-colors dark:text-white">
                     {{ news.title }}

@@ -69,7 +69,7 @@ if (process.client) {
                 </svg>
               </button>
 
-              <div v-show="openCategory === cat.slug" class="lg:hidden fixed left-4 right-4 mt-2 bg-white dark:bg-slate-900 shadow-2xl border border-gray-100 dark:border-slate-800 rounded-xl py-3 z-60">
+              <div v-show="openCategory === cat.slug" class="lg:hidden fixed left-4 right-4 mt-2 bg-white dark:bg-slate-900 shadow-2xl border border-gray-100 dark:border-slate-800 rounded-xl py-3 z-50">
                 <div class="grid grid-cols-2 gap-2 px-2">
                    <NuxtLink
                     v-for="sub in cat.sub_categories"
