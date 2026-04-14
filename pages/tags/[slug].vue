@@ -1,6 +1,7 @@
 <script setup>
 const route = useRoute()
 const api = useApi()
+const { locale } = useI18n()
 
 const Slug = computed(() => String(route.params.slug || ''))
 const currentPage = computed(() => {
@@ -36,8 +37,12 @@ const { data, pending, refresh } = await useAsyncData(
       seo: tagRes?.data?.seo || {}
     }
   },
-  { watch: [Slug, currentPage] }
+  { watch: [Slug, currentPage, locale] }
 )
+
+watch(locale, () => {
+  refresh()
+})
 
 const tagInfo = computed(() => data.value?.tagData?.tag_info || null)
 const posts = computed(() => data.value?.tagData?.posts?.data || [])
@@ -53,8 +58,10 @@ useSeoMeta({
 
 const formatDate = (dateString) => {
   if (!dateString) return ''
-  return new Date(dateString).toLocaleDateString('id-ID', {
-    year: 'numeric', month: 'long', day: 'numeric'
+  return new Date(dateString).toLocaleDateString(locale.value === 'id' ? 'id-ID' : 'en-US', {
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric'
   })
 }
 

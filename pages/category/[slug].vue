@@ -1,6 +1,7 @@
 <script setup>
 const route = useRoute()
 const api = useApi()
+const { locale } = useI18n()
 
 const categorySlug = computed(() => String(route.params.slug || ''))
 const currentPage = computed(() => {
@@ -41,9 +42,13 @@ const { data, pending, refresh } = await useAsyncData(
     }
   },
   {
-    watch: [categorySlug, currentPage]
+    watch: [categorySlug, currentPage, locale]
   }
 )
+
+watch(locale, () => {
+  refresh()
+})
 
 const categoryData = computed(() => data.value?.category || null)
 const popularNews = computed(() => data.value?.popularNews || [])
@@ -57,7 +62,7 @@ useSeoMeta({
 
 const formatDate = (dateString) => {
   if (!dateString) return ''
-  return new Date(dateString).toLocaleDateString('id-ID', {
+  return new Date(dateString).toLocaleDateString(locale.value === 'id' ? 'id-ID' : 'en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'

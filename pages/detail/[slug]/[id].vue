@@ -1,11 +1,12 @@
 <script setup>
 const route = useRoute()
 const api = useApi()
+const { locale } = useI18n()
 
 const slug = computed(() => String(route.params.slug || ''))
 const id = computed(() => Number(route.params.id || 0))
 
-const { data, pending } = await useAsyncData(
+const { data, pending, refresh } = await useAsyncData(
   () => `post-${slug.value}-${id.value}`,
   async () => {
     const detailRes = await api(`/posts/${slug.value}/${id.value}`)
@@ -30,9 +31,13 @@ const { data, pending } = await useAsyncData(
     }
   },
   {
-    watch: [slug, id]
+    watch: [slug, id, locale]
   }
 )
+
+watch(locale, () => {
+  refresh()
+})
 
 const post = computed(() => data.value?.post || null)
 const popularNews = computed(() => data.value?.popularNews || [])
@@ -47,7 +52,7 @@ useHead(() => ({
     },
     {
       property: 'og:image',
-      content: data.value?.post?.featured_image || ''
+      content: data.value?.seo?.open_graph_image || data.value?.post?.featured_image || ''
     }
   ]
 }))
@@ -60,7 +65,7 @@ watch(slug, () => {
 
 const formatDate = (dateString) => {
   if (!dateString) return ''
-  return new Date(dateString).toLocaleDateString('id-ID', {
+  return new Date(dateString).toLocaleDateString(locale.value === 'id' ? 'id-ID' : 'en-US', {
     day: 'numeric',
     month: 'long',
     year: 'numeric'
@@ -102,7 +107,7 @@ const copyLink = () => {
 <template>
   <div class="container mx-auto pb-20 font-poppins">
     <div v-if="pending" class="flex justify-center py-40">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-black dark:border-white"></div>
     </div>
     <div v-else-if="post && post.id" class="pt-8 px-4 lg:px-8">
       <div class="grid grid-cols-12 gap-8 lg:gap-12">
