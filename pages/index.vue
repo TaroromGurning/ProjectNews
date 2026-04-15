@@ -25,9 +25,30 @@ const categoryBlocks = computed(() => data.value?.category_blocks || [])
 useHead(() => ({
   title: data.value?.seo?.meta_title || 'Memuat...',
   meta: [
-    { name: 'description', content: data.value?.seo?.meta_description || '' },
-    { name: 'keywords', content: data.value?.seo?.focus_keyword || '' },
-    { property: 'og:image', content: data.value?.seo?.open_graph_image || '' }
+    { 
+      name: 'description', 
+      content: data.value?.seo?.meta_description || '' 
+    },
+    { 
+      name: 'keywords', 
+      content: data.value?.seo?.focus_keyword || '' 
+    },
+    { 
+      property: 'og:title', 
+      content: data.value?.seo?.meta_title || '' 
+    },
+    { 
+      property: 'og:description', 
+      content: data.value?.seo?.meta_description || '' 
+    },
+    { 
+      property: 'og:url', 
+      content: data.value?.seo?.canonical_url || window.location.href
+    },
+    { 
+      property: 'og:image', 
+      content: data.value?.seo?.open_graph_image || '' 
+    },
   ],
   link: [
     { rel: 'canonical', href: data.value?.seo?.canonical_url || '' }

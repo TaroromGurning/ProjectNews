@@ -53,7 +53,9 @@ useSeoMeta({
   title: () => data.value?.seo?.meta_title || 'Tag',
   description: () => data.value?.seo?.meta_description || '',
   ogTitle: () => data.value?.seo?.meta_title || 'Tag',
-  ogImage: () => data.value?.seo?.open_graph_image || ''
+  ogDescription: () => data.value?.seo?.meta_description || '',
+  ogImage: () => data.value?.seo?.open_graph_image || '',
+  ogUrl: () => data.value?.seo?.canonical_url || window.location.href,
 })
 
 const formatDate = (dateString) => {

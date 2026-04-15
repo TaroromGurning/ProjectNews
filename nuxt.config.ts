@@ -10,7 +10,15 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
+    optimizeDeps: {
+      include: [
+        '@unhead/schema-org/vue',
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+      ]
+    }
   },
+
   runtimeConfig: {
     public: {
       apiBase: ' '
@@ -18,7 +26,8 @@ export default defineNuxtConfig({
   },
 
   modules: [
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    '@nuxtjs/seo'
   ],
 
   i18n: {
@@ -33,6 +42,20 @@ export default defineNuxtConfig({
     { code: 'id', name: 'Indonesia', flag: '🇮🇩' },
     { code: 'zh', name: '中文', flag: '🇨🇳' }
   ],
-  }
+  },
   
+  site: {
+  url: 'http://localhost:3000', // 
+  name: 'CMS Template',
+  },
+
+  sitemap: {
+    sources: [
+      '/api/__sitemap__/urls',
+    ]
+  },
+
+  ogImage: {
+    zeroRuntime: true,
+  },  
 })

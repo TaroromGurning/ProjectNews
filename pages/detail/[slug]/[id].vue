@@ -51,6 +51,17 @@ useHead(() => ({
       content: data.value?.seo?.meta_description || ''
     },
     {
+      property: 'og:title',
+      content: data.value?.seo?.meta_title || data.value?.post?.title || ''
+    },
+    {
+      property: 'og:description',
+      content: data.value?.seo?.meta_description || ''
+    },
+    { property: 'og:url', 
+      content: data.value?.seo?.canonical_url || window.location.href
+    },
+    {
       property: 'og:image',
       content: data.value?.seo?.open_graph_image || data.value?.post?.featured_image || ''
     }
