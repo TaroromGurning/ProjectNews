@@ -225,7 +225,7 @@ const copyLink = () => {
                 <div class="aspect-video rounded-3xl overflow-hidden mb-4">
                   <img :src="next.featured_image || '/tes.png'" :alt="next.title" class="w-full h-full object-contain group-hover:scale-105 transition duration-500">
                 </div>
-                <p class="text-[#555555] text-[14px] mb-2 dark:text-gray-300">
+                <p class="text-[#555555] text-[14px] mb-2 dark:text-gray-200">
                     {{ next.category?.name }} - {{ formatDate(next.published_at) }}
                 </p>
                 <div class="font-medium text-gray-900 dark:text-white leading-snug line-clamp-2 text-lg">
@@ -239,12 +239,12 @@ const copyLink = () => {
 
         <div class="col-span-12 lg:col-span-4 pb-20 sm:flex-col">
           <div class="border-b border-gray-200 font-semibold font-poppins mb-6">
-          <p class="border-b-4 border-black w-fit text-xl lg:text-2xl -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
+          <p class="border-b-4 border-black w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
         </div>
           <div class="space-y-8">
             <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group">
               <NuxtLink :to="`/detail/${news.slug}/${news.id}`">
-                <p class="text-[#555555] text-[14px] mb-1 dark:text-gray-300">
+                <p class="text-[#555555] text-[14px] mb-1 dark:text-gray-200">
                   {{ news.category?.name }} — {{ formatDate(news.published_at) }}
                 </p>
                 <div class="text-sm font-medium line-clamp-2 dark:text-white">

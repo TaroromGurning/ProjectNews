@@ -2,6 +2,7 @@
 const route = useRoute()
 const api = useApi()
 const { locale } = useI18n()
+const { t } = useI18n()
 
 const Slug = computed(() => String(route.params.slug || ''))
 const currentPage = computed(() => {
@@ -192,7 +193,7 @@ onBeforeUnmount(() => {
                   <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-contain group-hover:scale-105 transition duration-300">
                 </div>
                 <div class="flex flex-col min-w-0">
-                  <span class="text-[#555555] dark:text-gray-300 text-[14px] mb-1">
+                  <span class="text-[#555555] dark:text-gray-200 text-[14px] mb-1">
                     {{ post.category?.name }} - {{ formatDate(post.published_at) }}
                   </span>
                   <h2 class="text-gray-900 dark:text-white font-medium text-sm lg:text-xl leading-tight line-clamp-2">
@@ -214,13 +215,13 @@ onBeforeUnmount(() => {
               </svg>
             </div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Tidak ada berita yang terkait
+              {{ $t('no_news.title') }}
             </h3>
             <p class="text-gray-500 dark:text-gray-400 mt-2">
-              Maaf, saat ini belum ada konten yang tersedia di tag ini.
+              {{ $t('no_news.description') }}
             </p>
             <NuxtLink to="/" class="mt-6 px-6 py-2 bg-black text-white dark:bg-white dark:text-black rounded-full hover:opacity-80 transition">
-              Kembali ke Beranda
+              {{ $t('no_news.back') }}
             </NuxtLink>
           </div>
 
@@ -289,19 +290,19 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="text-sm text-gray-500 dark:text-gray-400 font-poppins">
-              Halaman {{ paginationMeta.current_page }} dari {{ paginationMeta.last_page }}
+              page {{ paginationMeta.current_page }} of {{ paginationMeta.last_page }}
             </div>
           </div>
         </div>
 
         <div class="col-span-12 lg:col-span-4 pb-20 sm:flex-col">
           <div class="border-b border-gray-200 dark:border-slate-800 font-semibold font-poppins mb-6">
-            <p class="border-b-4 border-gray-800 w-fit text-3xl -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
+            <p class="border-b-4 border-gray-800 w-fit text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
           </div>
           <div class="mt-6 font-poppins space-y-6">
             <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group">
               <NuxtLink :to="`/detail/${news.slug}/${news.id}`" class="block">
-                <p class="text-[#555555] text-[14px] mb-1 dark:text-gray-300">
+                <p class="text-[#555555] text-[14px] mb-1 dark:text-gray-200">
                   {{ news.category?.name }} — {{ formatDate(news.published_at) }}
                 </p>
                 <p class="text-black text-base font-medium line-clamp-2 transition dark:text-white">

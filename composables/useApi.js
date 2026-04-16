@@ -1,4 +1,3 @@
-// composables/useApi.ts
 export const useApi = () => {
   const config = useRuntimeConfig()
   const { locale } = useI18n()

@@ -102,7 +102,7 @@ const formatDate = (dateString) => {
           <div class="mt-6 font-poppins space-y-6 overflow-y-auto"> 
             <div v-for="news in popularNews?.slice(0, 4)" :key="news.id" class="group cursor-pointer pb-4">
               <NuxtLink :to="`/detail/${news.slug}/${news.id}`" class="block">
-                <p class="text-[#555555] text-[14px] mb-1">
+                <p class="text-[#555555] text-[14px] mb-1 dark:text-gray-200">
                   {{ news.category?.name }} - {{ formatDate(news.published_at) }}
                 </p>
                 <h4 class="text-black text-[16px] font-semibold line-clamp-2 dark:text-white">
@@ -176,7 +176,7 @@ const formatDate = (dateString) => {
                 <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-contain group-hover:scale-110 transition-transform">
               </div>
               <div class="flex flex-col">
-                <p class="text-gray-500 text-[14px] mb-1 dark:text-gray-400">
+                <p class="text-gray-500 text-[14px] mb-1 dark:text-gray-200">
                   {{post.category?.name}} - {{ formatDate(post.published_at) }}
                 </p>
                 <h3 class="text-gray-900 text-[16px] font-semibold leading-snug line-clamp-2 dark:text-white">

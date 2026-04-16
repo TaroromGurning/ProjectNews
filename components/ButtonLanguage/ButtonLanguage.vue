@@ -1,5 +1,6 @@
 <script setup>
-const { setLocale, locale, locales } = useI18n()
+const { setLocale, locale, } = useI18n()
+const { activeLocales } = useActiveLocales()
 
 const changeLang = async (code) => {
   if (locale.value === code) return
@@ -15,7 +16,7 @@ const changeLang = async (code) => {
 <template>
   <div class="inline-flex items-center gap-0.5 p-0.75 bg-gray-100 dark:bg-zinc-800 border border-gray-200/60 dark:border-zinc-700/60 rounded-[10px]">
     <button
-      v-for="lang in locales"
+      v-for="lang in activeLocales"
       :key="lang.code"
       @click="changeLang(lang.code)"
       class="relative flex items-center gap-1.5 px-3.5 py-1.5 text-[13px] font-medium rounded-[7px] transition-all duration-150 select-none"

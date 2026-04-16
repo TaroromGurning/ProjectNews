@@ -1,5 +1,8 @@
 <script setup>
 const site = useSiteConfig()
+const { fetchActiveLocales } = useActiveLocales()
+
+await fetchActiveLocales()
 
 useSchemaOrg([
   defineWebSite({

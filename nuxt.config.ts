@@ -31,17 +31,20 @@ export default defineNuxtConfig({
   ],
 
   i18n: {
-  strategy: 'no_prefix', 
-  detectBrowserLanguage: {
-    useCookie: true,
-    cookieKey: 'i18n_redirected',
-    alwaysRedirect: true
-  },
-  locales: [
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'id', name: 'Indonesia', flag: '🇮🇩' },
-    { code: 'zh', name: '中文', flag: '🇨🇳' }
-  ],
+    strategy: 'no_prefix',
+    defaultLocale: 'en',
+    locales: [
+      { code: 'en', name: 'English', file: 'en.json', flag: '🇺🇸' },
+      { code: 'id', name: 'Indonesia', file: 'id.json', flag: '🇮🇩' },
+      { code: 'zh', name: '中文', file: 'zh.json', flag: '🇨🇳' },
+    ],
+    langDir: 'locales', 
+
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      alwaysRedirect: true
+    },
   },
   
   site: {
