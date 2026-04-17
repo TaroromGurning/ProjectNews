@@ -189,17 +189,17 @@ onBeforeUnmount(() => {
           <div v-if="posts.length > 0" class="space-y-6 mt-8">
             <div v-for="post in posts" :key="post.id" class="border-b border-gray-50 dark:border-slate-900 last:border-0">
               <NuxtLink :to="`/detail/${post.slug}/${post.id}`" class="flex py-4 gap-4 items-center group">
-                <div class="w-28 h-20 lg:w-[269px] lg:h-[180px] shrink-0 overflow-hidden rounded-xl">
+                <div class="w-28 h-20 lg:w-[269px] lg:h-[180px] shrink-0 overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700">
                   <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-contain group-hover:scale-105 transition duration-300">
                 </div>
                 <div class="flex flex-col min-w-0">
-                  <span class="text-[#555555] dark:text-gray-200 text-[14px] mb-1">
+                  <span class="text-[#555555] dark:text-gray-200 text-[12px] lg:text-[14px] mb-1">
                     {{ post.category?.name }} - {{ formatDate(post.published_at) }}
                   </span>
-                  <h2 class="text-gray-900 dark:text-white font-medium text-sm lg:text-xl leading-tight line-clamp-2">
+                  <h2 class="text-gray-900 dark:text-white font-medium text-[14px] lg:text-[16px] leading-tight line-clamp-1 lg:line-clamp-2">
                     {{ post.title }}
                   </h2>
-                  <div class="text-[#555555] dark:text-gray-400 text-[16px] mt-2 font-poppins line-clamp-2">
+                  <div class="text-[#555555] dark:text-gray-400 text-[14px] lg:text-[16px] mt-1 font-poppins line-clamp-2 lg:line-clamp-3 wrap-break-word">
                     {{ post.short_description }}
                   </div>
                 </div>
@@ -297,15 +297,15 @@ onBeforeUnmount(() => {
 
         <div class="col-span-12 lg:col-span-4 pb-20 sm:flex-col">
           <div class="border-b border-gray-200 dark:border-slate-800 font-semibold font-poppins mb-6">
-            <p class="border-b-4 border-gray-800 w-fit text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
+            <p class="border-b-4 border-gray-800 w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
           </div>
           <div class="mt-6 font-poppins space-y-6">
             <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group">
               <NuxtLink :to="`/detail/${news.slug}/${news.id}`" class="block">
-                <p class="text-[#555555] text-[14px] mb-1 dark:text-gray-200">
+                <p class="text-[#555555] text-[12px] lg:text-[14px] mb-1 dark:text-gray-200">
                   {{ news.category?.name }} — {{ formatDate(news.published_at) }}
                 </p>
-                <p class="text-black text-base font-medium line-clamp-2 transition dark:text-white">
+                <p class="text-black text-[14px] lg:text-[16px] font-medium line-clamp-2 transition dark:text-white">
                   {{ news.title }}
                 </p>
               </NuxtLink>
