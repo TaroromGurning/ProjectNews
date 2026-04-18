@@ -10,16 +10,6 @@ const currentPage = computed(() => {
   return Number.isInteger(page) && page > 0 ? page : 1
 })
 
-watch(Slug, async () => {
-  await navigateTo(
-    {
-      path: route.path,
-      query: {}
-    },
-    { replace: true }
-  )
-})
-
 const { data, pending, refresh } = await useAsyncData(
   () => `tag-${Slug.value}-page-${currentPage.value}`,
   async () => {
@@ -29,7 +19,11 @@ const { data, pending, refresh } = await useAsyncData(
     ])
 
     if (!tagRes?.data) {
-      throw createError({ statusCode: 404, statusMessage: 'Tag tidak ditemukan' })
+      throw createError({ 
+        statusCode: 404, 
+        statusMessage: 'Tag tidak ditemukan',
+        fatal: true
+      })
     }
 
     return {
@@ -50,13 +44,14 @@ const posts = computed(() => data.value?.tagData?.posts?.data || [])
 const paginationMeta = computed(() => data.value?.tagData?.posts || {})
 const popularNews = computed(() => data.value?.popularNews || [])
 
+const url = useRequestURL()
 useSeoMeta({
   title: () => data.value?.seo?.meta_title || 'Tag',
   description: () => data.value?.seo?.meta_description || '',
   ogTitle: () => data.value?.seo?.meta_title || 'Tag',
   ogDescription: () => data.value?.seo?.meta_description || '',
   ogImage: () => data.value?.seo?.open_graph_image || '',
-  ogUrl: () => data.value?.seo?.canonical_url || window.location.href,
+  ogUrl: () => data.value?.seo?.canonical_url || url.href,
 })
 
 const formatDate = (dateString) => {
@@ -68,11 +63,16 @@ const formatDate = (dateString) => {
   })
 }
 
-const totalPages = computed(() => paginationMeta.value.last_page || 1)
+const totalPages = computed(() => {
+  const lastPage = paginationMeta.value?.last_page 
+  return lastPage ? Number(lastPage) : 1
+})
 
 const displayedPages = computed(() => {
   const total = totalPages.value
   const current = currentPage.value
+
+  if (!total || total <= 1) return []
   const pages = []
 
   if (total <= 7) {
@@ -126,8 +126,6 @@ const changePage = async (page) => {
     },
     { replace: true }
   )
-
-  await refresh()
 
   if (import.meta.client) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -186,7 +184,7 @@ onBeforeUnmount(() => {
             </h1>
           </div>
 
-          <div v-if="posts.length > 0" class="space-y-6 mt-8">
+          <div v-if="posts.length > 0" class="space-y-6 py-8">
             <div v-for="post in posts" :key="post.id" class="border-b border-gray-50 dark:border-slate-900 last:border-0">
               <NuxtLink :to="`/detail/${post.slug}/${post.id}`" class="flex py-4 gap-4 items-center group">
                 <div class="w-28 h-20 lg:w-[269px] lg:h-[180px] shrink-0 overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700">
@@ -225,7 +223,7 @@ onBeforeUnmount(() => {
             </NuxtLink>
           </div>
 
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-10 pb-10 border-t border-gray-100 pt-8">   
+          <div v-if="paginationMeta.last_page > 1" class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-10 pb-10 border-t border-gray-100 pt-8">   
             <div class="flex items-center gap-2">
               <button 
                 @click="changePage(currentPage - 1)"
@@ -312,6 +310,20 @@ onBeforeUnmount(() => {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div v-else class="container mx-auto py-32 text-center">
+      <div class="max-w-md mx-auto px-4">
+        <h1 class="text-9xl font-bold text-gray-100 dark:text-slate-800">404</h1>
+        <h2 class="text-2xl font-bold mt-10 dark:text-white relative">Artikel Tidak Ditemukan</h2>
+        <p class="text-gray-500 mt-4">Maaf, artikel dengan slug <b class="text-red-500">"{{ $route.params.slug }}"</b> tidak terdaftar di sistem kami.</p>
+        <NuxtLink 
+          to="/" 
+          class="inline-block mt-8 px-8 py-3 bg-black text-white dark:bg-white dark:text-black rounded-full font-bold hover:scale-105 transition shadow-xl"
+        >
+          Kembali ke Beranda
+        </NuxtLink>
       </div>
     </div>
   </div>

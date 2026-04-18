@@ -175,13 +175,13 @@ const copyLink = () => {
             class="mt-10 prose prose-lg text-[16px] dark:prose-invert max-w-none text-[#555555] dark:text-gray-300 leading-relaxed wrap-break-word">
           </div>
 
-          <div class="mt-8 flex flex-col sm:flex-row sm:items-center justify-between">
+          <div class="mt-8 flex justify-between">
             <div class="flex items-start gap-3 flex-1 min-w-0">
               <span class="text-[#555555] text-[16px] dark:text-white font-medium shrink-0">Tags:</span>
               <div class="flex flex-wrap gap-x-3 gap-y-2">
                 <span v-for="tag in post.tags" :key="tag.slug" class="text-sm text-black italic underline cursor-pointer dark:text-gray-300">
                   <NuxtLink :to="`/tags/${tag.slug}`">
-                    {{ tag.name }}
+                    {{ tag.name }},
                   </NuxtLink>
                 </span>
               </div>

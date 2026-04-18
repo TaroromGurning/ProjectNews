@@ -6,6 +6,12 @@ const { data, pending, refresh } = await useAsyncData(
   'home-page',
   async () => {
     const res = await api('/home')
+    if (!res || !res.data) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'API Tidak Merespon'
+      })
+    }
     return res.data
   },
   {
