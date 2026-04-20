@@ -179,6 +179,7 @@ onBeforeUnmount(() => {
     <div v-else-if="categoryData" class="pt-8 px-4 lg:px-8">
       <div class="grid grid-cols-12 gap-8">
         <div class="col-span-12 lg:col-span-8">
+          <div class="sticky top-32 h-fit z-20 bg-white py-4 dark:bg-slate-950">
           <div class="border-b border-gray-200 font-semibold font-poppins">
             <h1 class="border-b-4 border-black w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white capitalize">
               {{ categoryData.category_info.name }}
@@ -196,10 +197,11 @@ onBeforeUnmount(() => {
               </NuxtLink>
             </button>
           </div>
+          </div>
 
-          <div v-if="categoryData.posts.data.length > 0" class="space-y-6 font-poppins mb-8">
+          <div v-if="categoryData.posts.data.length > 0" class="space-y-6 font-poppins mb-8 z-10">
             <div v-for="post in categoryData.posts.data" :key="post.id" class="border-b border-gray-50 dark:border-slate-900 last:border-0">
-              <NuxtLink :to="`/detail/${post.slug}/${post.id}`" class="flex py-4 gap-4 items-center group overflow-hidden">
+              <NuxtLink :to="`/detail/${post.slug}/${post.id}`" class="flex py-4 gap-4 items-start group overflow-hidden">
                 <div class="w-28 h-20 lg:w-[269px] lg:h-[180px] shrink-0 overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700">
                   <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-contain hover:scale-105 transition duration-300">
                 </div>
@@ -306,7 +308,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div class="col-span-12 lg:col-span-4 pb-20 sm:flex-col">
+        <div class="sticky top-40 h-fit z-10 col-span-12 lg:col-span-4 pb-20 sm:flex-col">
             <div class="border-b border-gray-200 font-semibold font-poppins mb-6">
               <p class="border-b-4 border-gray-800 w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
             </div>

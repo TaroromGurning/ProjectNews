@@ -181,7 +181,7 @@ const formatDate = (dateString) => {
               <div class="w-[180px] h-[120px] shrink-0 overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700">
                 <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-contain group-hover:scale-110 transition-transform">
               </div>
-              <div class="flex flex-col py-6">
+              <div class="flex flex-col min-w-0">
                 <p class="text-gray-500 text-[12px] lg:text-[14px] mb-1 dark:text-gray-200">
                   {{post.category?.name}} - {{ formatDate(post.published_at) }}
                 </p>
