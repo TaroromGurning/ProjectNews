@@ -63,7 +63,7 @@ useHead(() => ({
 
 const formatDate = (dateString) => {
   if (!dateString) return ''
-  return new Date(dateString).toLocaleDateString(locale.value === 'id' ? 'id-ID' : 'en-US', {
+  return new Date(dateString).toLocaleDateString(locale.value === 'id' ? 'id-ID' : (locale.value === 'en' ? 'en-US' : 'zh-CN'), {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -101,7 +101,7 @@ const formatDate = (dateString) => {
         <div class="col-span-1 lg:col-span-4 flex flex-col w-full">
           <div class="border-b border-gray-200 font-semibold font-poppins">
             <p class="border-b-4 border-black w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">
-              Popular News
+              {{ $t('Popular_News') }}
             </p>
           </div>
           
@@ -123,7 +123,9 @@ const formatDate = (dateString) => {
 
       <div class="pb-16">
         <div class="border-b border-gray-200 font-semibold font-poppins mb-8">
-          <p class="border-b-4 border-black w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">Latest News</p>
+          <p class="border-b-4 border-black w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">
+            {{ $t('Latest_News') }}
+          </p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-8">

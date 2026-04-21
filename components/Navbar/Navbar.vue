@@ -41,7 +41,7 @@ if (process.client) {
 
         <div class="flex items-center gap-6 lg:gap-8 py-4 font-Poppins text-sm dark:text-white overflow-x-auto lg:overflow-visible no-scrollbar whitespace-nowrap relative">
           <NuxtLink to="/" class="hover:text-blue-600 dark:hover:text-yellow-400 transition shrink-0" active-class="text-blue-600 dark:text-yellow-400 font-bold">
-            Home
+            {{ $t('Home') }}
           </NuxtLink>
 
           <div v-for="cat in categories" :key="cat.slug" class="group relative shrink-0">

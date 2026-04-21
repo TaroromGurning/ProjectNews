@@ -3,5 +3,10 @@
     "title": "暂无相关新闻",
     "description": "抱歉，目前该类别下没有可用内容。",
     "back": "返回首页"
-  }
+  },
+  "Popular_News": "热门新闻",
+  "Tags": "标签",
+  "Latest_News": "最新新闻",
+  "Up_Next": "接下来",
+  "Home": "首页"
 }

@@ -76,7 +76,7 @@ watch(slug, () => {
 
 const formatDate = (dateString) => {
   if (!dateString) return ''
-  return new Date(dateString).toLocaleDateString(locale.value === 'id' ? 'id-ID' : 'en-US', {
+  return new Date(dateString).toLocaleDateString(locale.value === 'id' ? 'id-ID' : (locale.value === 'en' ? 'en-US' : 'zh-CN'), {
     day: 'numeric',
     month: 'long',
     year: 'numeric'
@@ -177,7 +177,8 @@ const copyLink = () => {
 
           <div class="mt-8 flex justify-between">
             <div class="flex items-start gap-3 flex-1 min-w-0">
-              <span class="text-[#555555] text-[16px] dark:text-white font-medium shrink-0">Tags:</span>
+              <span class="text-[#555555] text-[16px] dark:text-white font-medium shrink-0">
+                {{ $t('Tags') }}:</span>
               <div class="flex flex-wrap gap-x-3 gap-y-2">
                 <span v-for="tag in post.tags" :key="tag.slug" class="text-sm text-black italic underline cursor-pointer dark:text-gray-300">
                   <NuxtLink :to="`/tags/${tag.slug}`">
@@ -217,7 +218,9 @@ const copyLink = () => {
 
           <div class="mt-20">
             <div class="border-b border-gray-200 font-semibold font-poppins mb-8">
-              <p class="border-b-4 border-black w-fit text-xl lg:text-2xl -mb-0.5 py-2 dark:text-white dark:border-white">Up Next</p>
+              <p class="border-b-4 border-black w-fit text-xl lg:text-2xl -mb-0.5 py-2 dark:text-white dark:border-white">
+                {{ $t('Up_Next') }}
+              </p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div v-for="next in latestNews.slice(0, 3)" :key="next.id" class="group cursor-pointer">
@@ -240,7 +243,9 @@ const copyLink = () => {
         <div class="col-span-12 lg:col-span-4 sticky top-40 h-fit z-10">
           <div class="sm:flex-col">
             <div class="border-b border-gray-200 font-semibold font-poppins mb-6">
-            <p class="border-b-4 border-black w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
+            <p class="border-b-4 border-black w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">
+              {{ $t('Popular_News') }}
+            </p>
           </div>
             <div class="space-y-8">
               <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group">

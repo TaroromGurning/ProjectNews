@@ -56,7 +56,7 @@ useSeoMeta({
 
 const formatDate = (dateString) => {
   if (!dateString) return ''
-  return new Date(dateString).toLocaleDateString(locale.value === 'id' ? 'id-ID' : 'en-US', {
+  return new Date(dateString).toLocaleDateString(locale.value === 'id' ? 'id-ID' : (locale.value === 'en' ? 'en-US' : 'zh-CN'), {
     year: 'numeric', 
     month: 'long', 
     day: 'numeric'
@@ -180,7 +180,7 @@ onBeforeUnmount(() => {
         <div class="col-span-12 lg:col-span-8">
           <div class="border-b border-gray-200 dark:border-slate-800 font-semibold font-poppins">
             <h1 class="border-b-4 border-black w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white capitalize">
-              Tag: {{ tagInfo.name }}
+             {{ $t('Tags') }} : {{ tagInfo.name }}
             </h1>
           </div>
 
@@ -228,7 +228,7 @@ onBeforeUnmount(() => {
               <button 
                 @click="changePage(currentPage - 1)"
                 :disabled="currentPage === 1"
-                class="w-10 h-10 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 disabled:opacity-30 transition-all dark:border-slate-800 dark:text-gray-500"
+                class="w-10 h-10 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 disabled:opacity-30 transition-all dark:border-slate-800 dark:text-gray-500 cursor-pointer disabled:pointer-events-none"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -240,7 +240,7 @@ onBeforeUnmount(() => {
                   <button
                     @click.stop="page === '...' ? toggleJumpInput(index) : changePage(page)"
                     :class="[
-                      'px-4 py-2 text-sm font-medium border rounded-lg transition-all duration-200',
+                      'px-4 py-2 text-sm font-medium border rounded-lg transition-all duration-200 cursor-pointer',
                       page !== '...' && Number(page) === currentPage
                         ? 'bg-black text-white border-gray-500 dark:border-white shadow-md dark:bg-yellow-400'
                         : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600 dark:hover:border-yellow-400 dark:hover:text-yellow-400',
@@ -264,7 +264,7 @@ onBeforeUnmount(() => {
                         @keyup.enter="jumpToPage"
                         @input="jumpPageError = ''"
                       />
-                      <button @click="jumpToPage" class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:bg-yellow-400 dark:hover:bg-yellow-500 transition-all">
+                      <button @click="jumpToPage" class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:bg-yellow-400 dark:hover:bg-yellow-500 transition-all cursor-pointer">
                         Go
                       </button>
                     </div>
@@ -279,7 +279,7 @@ onBeforeUnmount(() => {
               <button 
                 @click="changePage(currentPage + 1)"
                 :disabled="currentPage === paginationMeta.last_page"
-                class="w-10 h-10 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 disabled:opacity-30 transition-all dark:border-slate-800 dark:text-gray-500"
+                class="w-10 h-10 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 disabled:opacity-30 transition-all dark:border-slate-800 dark:text-gray-500 cursor-pointer disabled:pointer-events-none"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -295,7 +295,9 @@ onBeforeUnmount(() => {
 
         <div class="sticky top-40 h-fit z-10 col-span-12 lg:col-span-4 pb-20 sm:flex-col">
           <div class="border-b border-gray-200 dark:border-slate-800 font-semibold font-poppins mb-6">
-            <p class="border-b-4 border-gray-800 w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">Popular News</p>
+            <p class="border-b-4 border-gray-800 w-fit text-xl lg:text-[32px] -mb-0.5 py-2 dark:text-white dark:border-white">
+              {{ $t('Popular_News') }}
+            </p>
           </div>
           <div class="mt-6 font-poppins space-y-6">
             <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group">

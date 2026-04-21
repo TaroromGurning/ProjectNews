@@ -3,5 +3,11 @@
     "title": "No related news",
     "description": "Sorry, there is no content available in this category.",
     "back": "Back to Home"
-  }
+  },
+  "Popular_News": "Popular News",
+  "Tags": "Tags",
+  "Latest_News": "Latest News",
+  "Up_Next": "Up Next",
+  "Home": "Home"
+
 }
