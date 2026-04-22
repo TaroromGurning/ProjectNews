@@ -1,27 +1,32 @@
 <script setup>
 const api = useApi()
 
-const { data } = await useAsyncData(
-  'navbar-categories',
-  async () => {
-    const res = await api('/categories')
-    return res.data
-  }
-)
+const { data } = await useAsyncData('navbar-categories', async () => {
+  const res = await api('/categories')
+  return res.data
+})
 
 const categories = computed(() => data.value?.categories || [])
-
 const openCategory = ref(null)
 
 const toggleCategory = (slug) => {
   openCategory.value = openCategory.value === slug ? null : slug
 }
 
-if (process.client) {
-  window.addEventListener('click', () => {
+const handleOutsideClick = (event) => {
+  const nav = document.querySelector('nav')
+  if (nav && !nav.contains(event.target)) {
     openCategory.value = null
-  })
+  }
 }
+
+onMounted(() => {
+  window.addEventListener('click', handleOutsideClick)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('click', handleOutsideClick)
+})
 </script>
 
 <template>
@@ -30,14 +35,10 @@ if (process.client) {
       <div class="container mx-auto px-4 lg:px-8">
         <div class="flex items-center border-b border-gray-200 justify-between">
           <NuxtLink to="/" class="py-4">
-            <h1 class="text-2xl font-inika dark:text-white tracking-tighter">
-              CMS Template
-            </h1>
+            <h1 class="text-2xl font-inika dark:text-white tracking-tighter">CMS Template</h1>
           </NuxtLink>
-          
-        <ButtonLanguage />
+          <ButtonLanguage />
         </div>
-        
 
         <div class="flex items-center gap-6 lg:gap-8 py-4 font-Poppins text-sm dark:text-white overflow-x-auto lg:overflow-visible no-scrollbar whitespace-nowrap relative">
           <NuxtLink to="/" class="hover:text-blue-600 dark:hover:text-yellow-400 transition shrink-0" active-class="text-blue-600 dark:text-yellow-400 font-bold">
@@ -55,52 +56,57 @@ if (process.client) {
                   :to="`/category/${cat.slug}`"
                   class="flex items-center gap-1"
                   active-class="text-blue-600 dark:text-yellow-400 font-bold"
-                  @click.stop
+                  @click.stop 
                 >
                   {{ cat.name }}
                 </NuxtLink>
 
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-3 w-3 opacity-50 transition-transform duration-200"
+                  class="h-3 w-3 opacity-50 transition-transform duration-300"
                   :class="{ 'rotate-180': openCategory === cat.slug }"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 >
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
 
-              <div v-show="openCategory === cat.slug" class="lg:hidden fixed left-4 right-4 mt-2 bg-white dark:bg-slate-900 shadow-2xl border border-gray-100 dark:border-slate-800 rounded-xl py-3 z-50">
-                <div class="grid grid-cols-2 gap-2 px-2">
-                   <NuxtLink
-                    v-for="sub in cat.sub_categories"
-                    :key="sub.slug"
-                    :to="`/category/${sub.slug}`"
-                    class="block px-4 py-3 text-sm bg-gray-50 dark:bg-slate-800/50 rounded-lg active:bg-blue-50 dark:active:bg-blue-900/20 transition"
-                  >
-                    {{ sub.name }}
-                  </NuxtLink>
-                </div>
-              </div>
-
-              <div class="hidden lg:group-hover:block absolute top-full left-0 mt-0 bg-white dark:bg-slate-900 shadow-xl border border-gray-100 dark:border-slate-800 rounded-lg min-w-30 z-100 py-2">
+              <div 
+                :class="[
+                  'absolute top-full right-0 mt-0 origin-top-right bg-white dark:bg-slate-900 shadow-xl border border-gray-100 dark:border-slate-800 rounded-lg min-w-40 z-100 py-2 transition-all',
+                  openCategory === cat.slug ? 'block! opacity-100 visible' : 'hidden lg:group-hover:block'
+                ]"
+                @click.stop
+              >
                 <NuxtLink
                   v-for="sub in cat.sub_categories"
                   :key="sub.slug"
                   :to="`/category/${sub.slug}`"
                   class="block px-4 py-2 text-xs hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-yellow-400 transition"
+                  @click="openCategory = null" 
                 >
                   {{ sub.name }}
                 </NuxtLink>
+              </div>
+
+              <div v-if="openCategory === cat.slug" class="lg:hidden fixed left-4 right-4 mt-2 bg-white dark:bg-slate-900 shadow-2xl border border-gray-100 dark:border-slate-800 rounded-xl py-3 z-50">
+                <div class="grid grid-cols-2 gap-2 px-2">
+                   <NuxtLink
+                    v-for="sub in cat.sub_categories"
+                    :key="sub.slug"
+                    :to="`/category/${sub.slug}`"
+                    class="block px-4 py-3 text-sm bg-gray-50 dark:bg-slate-800/50 rounded-lg transition"
+                    @click="openCategory = null"
+                  >
+                    {{ sub.name }}
+                  </NuxtLink>
+                </div>
               </div>
             </div>
 
             <NuxtLink
               v-else
               :to="`/category/${cat.slug}`"
-              class="hover:text-blue-600 dark:hover:text-yellow-400 transition capitalize flex items-center gap-1 py-1"
+              class="hover:text-blue-600 dark:hover:text-yellow-400 transition capitalize py-1 block"
               active-class="text-blue-600 dark:text-yellow-400 font-bold"
             >
               {{ cat.name }}

@@ -113,7 +113,7 @@ onBeforeUnmount(() => {
                   </NuxtLink>
                 </div>
 
-                <div class="hidden lg:group-hover:block absolute top-full left-0 mt-0 bg-white dark:bg-slate-900 shadow-xl border border-gray-100 dark:border-slate-800 rounded-lg min-w-35 z-100 py-2">
+                <div class="hidden lg:group-hover:block absolute top-full right-0 mt-0 bg-white dark:bg-slate-900 shadow-xl border border-gray-100 dark:border-slate-800 rounded-lg min-w-35 z-100 py-2">
                   <NuxtLink
                     v-for="sub in cat.sub_categories"
                     :key="sub.slug"
