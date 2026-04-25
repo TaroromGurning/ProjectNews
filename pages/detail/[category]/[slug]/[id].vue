@@ -15,10 +15,11 @@ const { data, pending, refresh } = await useAsyncData(
 
     const post = detailRes?.data?.post
 
-    if (!post) {
+    if (!post || post.id !== id.value) {
       throw createError({
         statusCode: 404,
-        statusMessage: 'Artikel tidak ditemukan'
+        statusMessage: 'Artikel tidak ditemukan',
+        fatal: true
       })
     }
 
@@ -44,6 +45,7 @@ const post = computed(() => data.value?.post || null)
 const popularNews = computed(() => data.value?.popularNews || [])
 const latestNews = computed(() => data.value?.latestNews || [])
 
+const url = useRequestURL()
 useHead(() => ({
   title: data.value?.seo?.meta_title || data.value?.post?.title || 'Memuat...',
   meta: [
@@ -60,7 +62,7 @@ useHead(() => ({
       content: data.value?.seo?.meta_description || ''
     },
     { property: 'og:url', 
-      content: data.value?.seo?.canonical_url || window.location.href
+      content: data.value?.seo?.canonical_url || url.href
     },
     {
       property: 'og:image',
@@ -271,7 +273,12 @@ const copyLink = () => {
       <div class="max-w-md mx-auto px-4">
         <h1 class="text-9xl font-bold text-gray-100 dark:text-slate-800">404</h1>
         <h2 class="text-2xl font-bold mt-10 dark:text-white relative">Artikel Tidak Ditemukan</h2>
-        <p class="text-gray-500 mt-4">Maaf, artikel dengan slug <b class="text-red-500">"{{ $route.params.slug }}"</b> tidak terdaftar di sistem kami.</p>
+        <p class="text-gray-500 mt-4">Maaf, artikel dengan
+          <span>
+            slug <b class="text-red-500">"{{ $route.params.slug }}"</b> / id <b class="text-red-500">"{{ $route.params.id }}"</b>
+          </span>
+          tidak terdaftar di sistem kami.
+        </p>
         <NuxtLink 
           to="/" 
           class="inline-block mt-8 px-8 py-3 bg-black text-white dark:bg-white dark:text-black rounded-full font-bold hover:scale-105 transition shadow-xl"

@@ -129,7 +129,7 @@ const formatDate = (dateString) => {
           </p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-10 max-h-[574px]">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-10 lg:max-h-[574px]">
           <div v-if="latestNews?.length > 0" class="md:col-span-2 lg:col-span-4 relative overflow-hidden rounded-2xl lg:max-w-[400px] h-75 md:h-[574px] group cursor-pointer bg-white">
             <NuxtLink :to="`/detail/${latestNews?.[0]?.category?.slug}/${latestNews?.[0]?.slug}/${latestNews?.[0]?.id}`">
             <img :src="latestNews?.[0]?.featured_image || '/tes.png'" :alt="latestNews?.[0]?.title" class="w-full h-full object-contain block transition-transform duration-500 group-hover:scale-110">
