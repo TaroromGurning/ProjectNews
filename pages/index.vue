@@ -28,6 +28,7 @@ const popularNews = computed(() => data.value?.popular_news || [])
 const latestNews = computed(() => data.value?.latest_news || [])
 const categoryBlocks = computed(() => data.value?.category_blocks || [])
 
+const url = useRequestURL()
 useHead(() => ({
   title: data.value?.seo?.meta_title || 'Memuat...',
   meta: [
@@ -49,7 +50,7 @@ useHead(() => ({
     },
     { 
       property: 'og:url', 
-      content: data.value?.seo?.canonical_url || window.location.href
+      content: data.value?.seo?.canonical_url || url.href
     },
     { 
       property: 'og:image', 
@@ -57,7 +58,7 @@ useHead(() => ({
     },
   ],
   link: [
-    { rel: 'canonical', href: data.value?.seo?.canonical_url || '' }
+    { rel: 'canonical', href: data.value?.seo?.canonical_url || url.href }
   ]
 }))
 
@@ -128,7 +129,7 @@ const formatDate = (dateString) => {
           </p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-10 max-h-[574px]">
           <div v-if="latestNews?.length > 0" class="md:col-span-2 lg:col-span-4 relative overflow-hidden rounded-2xl lg:max-w-[400px] h-75 md:h-[574px] group cursor-pointer bg-white">
             <NuxtLink :to="`/detail/${latestNews?.[0]?.slug}/${latestNews?.[0]?.id}`">
             <img :src="latestNews?.[0]?.featured_image || '/tes.png'" :alt="latestNews?.[0]?.title" class="w-full h-full object-contain block transition-transform duration-500 group-hover:scale-110">
@@ -146,7 +147,7 @@ const formatDate = (dateString) => {
             </NuxtLink>
           </div>
 
-          <div class="md:col-span-2 lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+          <div class="md:col-span-2 lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10">
             <div v-for="news in latestNews?.slice(1, 5)" :key="news.id" class="relative overflow-hidden rounded-2xl max-w-[400px] h-[267px] group cursor-pointer bg-white">
               <NuxtLink :to="`/detail/${news.slug}/${news.id}`">
               <img :src="news.featured_image || '/tes.png'" :alt="news.title" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">

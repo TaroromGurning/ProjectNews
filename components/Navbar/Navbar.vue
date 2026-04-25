@@ -56,7 +56,7 @@ onUnmounted(() => {
                   :to="`/category/${cat.slug}`"
                   class="flex items-center gap-1"
                   active-class="text-blue-600 dark:text-yellow-400 font-bold"
-                  @click.stop 
+                  @click.stop
                 >
                   {{ cat.name }}
                 </NuxtLink>
