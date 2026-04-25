@@ -201,7 +201,7 @@ onBeforeUnmount(() => {
 
           <div v-if="categoryData.posts.data.length > 0" class="space-y-6 font-poppins mb-8 z-10">
             <div v-for="post in categoryData.posts.data" :key="post.id" class="border-b border-gray-50 dark:border-slate-900 last:border-0">
-              <NuxtLink :to="`/detail/${post.slug}/${post.id}`" class="flex py-4 gap-4 items-start group overflow-hidden">
+              <NuxtLink :to="`/detail/${post.category?.slug}/${post.slug}/${post.id}`" class="flex py-4 gap-4 items-start group overflow-hidden">
                 <div class="w-28 h-20 lg:w-[269px] lg:h-[180px] shrink-0 overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700">
                   <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-contain hover:scale-105 transition duration-300">
                 </div>
@@ -316,7 +316,7 @@ onBeforeUnmount(() => {
             </div>
             <div class="mt-6 font-poppins space-y-8">
                 <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group cursor-pointer">
-                  <NuxtLink :to="`/detail/${news.slug}/${news.id}`" class="block">
+                  <NuxtLink :to="`/detail/${news.category?.slug}/${news.slug}/${news.id}`" class="block">
                     <p class="text-[#555555] text-[12px] lg:text-[14px] mb-1 dark:text-gray-200">
                     {{ news.category?.name }} - {{ formatDate(news.published_at) }}
                     </p>

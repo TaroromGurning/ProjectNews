@@ -3,6 +3,7 @@ const route = useRoute()
 const api = useApi()
 const { locale } = useI18n()
 
+const category = computed(() => String(route.params.category || ''))
 const slug = computed(() => String(route.params.slug || ''))
 const id = computed(() => Number(route.params.id || 0))
 
@@ -226,7 +227,7 @@ const copyLink = () => {
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div v-for="next in latestNews.slice(0, 3)" :key="next.id" class="group cursor-pointer">
-                <NuxtLink :to="`/detail/${next.slug}/${next.id}`">
+                <NuxtLink :to="`/detail/${next.category?.slug}/${next.slug}/${next.id}`">
                 <div class="aspect-video rounded-3xl overflow-hidden mb-4 border border-gray-200 dark:border-slate-700">
                   <img :src="next.featured_image || '/tes.png'" :alt="next.title" class="w-full h-full object-contain group-hover:scale-105 transition duration-500">
                 </div>
@@ -251,7 +252,7 @@ const copyLink = () => {
           </div>
             <div class="space-y-8">
               <div v-for="news in popularNews.slice(0, 5)" :key="news.id" class="group">
-                <NuxtLink :to="`/detail/${news.slug}/${news.id}`">
+                <NuxtLink :to="`/detail/${news.category?.slug}/${news.slug}/${news.id}`">
                   <p class="text-[#555555] text-[14px] mb-1 dark:text-gray-200">
                     {{ news.category?.name }} — {{ formatDate(news.published_at) }}
                   </p>
