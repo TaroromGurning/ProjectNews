@@ -212,7 +212,7 @@ onBeforeUnmount(() => {
                   <h2 class="text-gray-900 dark:text-white font-medium text-[14px] lg:text-[16px] line-clamp-1 lg:line-clamp-2 wrap-break-word">
                     {{ post.title }}
                   </h2>
-                  <div class="text-[#555555] dark:text-gray-400 text-[14px] lg:text-[16px] mt-1 font-poppins line-clamp-2 lgline-clamp-3 wrap-break-word">
+                  <div class="text-[#555555] dark:text-gray-400 text-[14px] lg:text-[16px] mt-1 font-poppins line-clamp-2 lg:line-clamp-3 wrap-break-word">
                     {{ post.short_description }}
                   </div>
                 </div>

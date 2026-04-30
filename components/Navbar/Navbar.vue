@@ -1,10 +1,11 @@
 <script setup>
 const api = useApi()
+const { locale } = useI18n()
 
 const { data } = await useAsyncData('navbar-categories', async () => {
   const res = await api('/categories')
   return res.data
-})
+}, { watch: [locale] })
 
 const categories = computed(() => data.value?.categories || [])
 const openCategory = ref(null)

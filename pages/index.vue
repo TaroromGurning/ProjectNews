@@ -2,21 +2,14 @@
 const api = useApi()
 const { locale } = useI18n()
 
-const { data, pending, refresh } = await useAsyncData(
+const { data, pending, error, refresh } = await useAsyncData(
   'home-page',
   async () => {
     const res = await api('/home')
-    if (!res || !res.data) {
-      throw createError({
-        statusCode: 404,
-        statusMessage: 'API Tidak Merespon'
-      })
-    }
+    if (!res || !res.data) throw new Error('API tidak merespons')
     return res.data
   },
-  {
-    watch: [locale] 
-  }
+  { watch: [locale] }
 )
 
 watch(locale, () => {
@@ -74,7 +67,39 @@ const formatDate = (dateString) => {
 
 <template>
   <div class="container mx-auto">
-    <div v-if="!pending" class="px-4 lg:px-8"> 
+    <div v-if="error" class="flex flex-col items-center justify-center gap-3 text-center px-4 py-20">
+      <div class="relative p-6 mb-4 rounded-full bg-gray-50 dark:bg-zinc-900">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="48" 
+          height="48" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          stroke-width="2" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" 
+          class="lucide lucide-cloud-off text-gray-400 dark:text-zinc-500 animate-pulse"
+        >
+          <path d="m2 2 20 20"/>
+          <path d="M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.307-.193"/>
+          <path d="M21.532 16.5A4.5 4.5 0 0 0 17.5 10h-1.79A7 7 0 0 0 7 5.07"/>
+        </svg>
+        
+        <div class="absolute inset-0 flex items-center justify-center rotate-45"></div>
+      </div>
+      <p class="text-gray-800 font-medium dark:text-white">{{ $t('not_found.title') }}</p>
+      <p class="text-sm text-gray-400">{{ $t('not_found.description') }}</p>
+      <button @click="refresh()" class="mt-1 text-sm px-4 py-2 border border-gray-200 text-black dark:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+        {{ $t('not_found.back') }}
+      </button>
+    </div>
+
+    <div v-else-if="pending" class="flex items-center justify-center min-h-screen">  
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black dark:border-white"></div>
+    </div>
+
+    <div v-else class="px-4 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-12 py-8 lg:py-16 gap-8 lg:gap-10">
         <div v-if="heroPost" class="col-span-1 lg:col-span-8 h-[503px] w-full max-w-[752px] relative overflow-hidden rounded-2xl cursor-pointer group justify-self-start">
           <NuxtLink :to="`/detail/${heroPost.category?.slug}/${heroPost.slug}/${heroPost.id}`" class="block h-full bg-white">
@@ -196,10 +221,6 @@ const formatDate = (dateString) => {
           </div>
         </div>
       </div>
-    </div>
-
-    <div v-else class="flex items-center justify-center min-h-screen">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black dark:border-white"></div>
     </div>
   </div>
 </template>

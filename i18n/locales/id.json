@@ -8,5 +8,10 @@
   "Tags": "Tag",
   "Latest_News": "Berita Terbaru",
   "Up_Next": "Up Next",
-  "Home": "Beranda"
+  "Home": "Beranda",
+  "not_found": {
+    "title": "Gagal memuat konten",
+    "description": "Server tidak merespons. Periksa koneksi atau coba lagi.",
+    "back": "Coba lagi"
+  }
 }

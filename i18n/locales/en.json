@@ -8,6 +8,11 @@
   "Tags": "Tags",
   "Latest_News": "Latest News",
   "Up_Next": "Up Next",
-  "Home": "Home"
+  "Home": "Home",
+  "not_found": {
+    "title": "Content failed to load",
+    "description": "The server is not responding. Check your connection or try again.",
+    "back": "Try Again"
+  }
 
 }

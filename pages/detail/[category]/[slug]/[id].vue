@@ -141,7 +141,7 @@ const copyLink = () => {
           <div class="flex justify-between gap-2 mt-4">
             <NuxtLink :to="`/category/${post.category?.slug}`">
               <span class="inline-flex items-center w-auto h-auto px-3 py-1 rounded-full text-[14px] bg-black text-white dark:bg-white dark:text-black wrap-break-word overflow-hidden">
-                {{ post.category?.name || 'Tanpa Kategori' }}
+                {{ post.category?.[0]?.name || 'Tanpa Kategori' }}
               </span>
             </NuxtLink>
             <div class="relative flex gap-2 h-9">
@@ -177,15 +177,15 @@ const copyLink = () => {
           </div>
 
           <div v-html="post.content_html"
-            class="mt-10 prose prose-lg text-[16px] dark:prose-invert max-w-none text-[#555555] dark:text-gray-300 leading-relaxed wrap-break-word">
+            class="mt-10 prose prose-lg text-[16px] dark:prose-invert max-w-none text-[#555555] font-poppins dark:text-gray-300 leading-relaxed wrap-break-word">
           </div>
 
           <div class="mt-8 flex justify-between">
-            <div class="flex items-start gap-3 flex-1 min-w-0">
+            <div class="flex items-start gap-3 flex-1 min-w-0 font-poppins">
               <span class="text-[#555555] text-[16px] dark:text-white font-medium shrink-0">
                 {{ $t('Tags') }}:</span>
               <div class="flex flex-wrap gap-x-3 gap-y-2">
-                <span v-for="tag in post.tags" :key="tag.slug" class="text-sm text-black italic underline cursor-pointer dark:text-gray-300">
+                <span v-for="tag in post.tags" :key="tag.slug" class="text-[16px] text-black italic underline cursor-pointer dark:text-gray-300">
                   <NuxtLink :to="`/tags/${tag.slug}`">
                     {{ tag.name }},
                   </NuxtLink>

@@ -1,14 +1,14 @@
 <script setup>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-
 const api = useApi()
+const { locale } = useI18n()
 
-const { data, pending } = await useAsyncData(
+const { data } = await useAsyncData(
   'footer-categories',
   async () => {
     const res = await api('/categories')
     return res.data
-  }
+  },
+  { watch: [locale] }
 )
 
 const categories = computed(() => data.value?.categories || [])
@@ -42,7 +42,7 @@ onBeforeUnmount(() => {
       <div class="flex flex-col lg:flex-row items-center justify-between border-b border-gray-50 text-white pb-4">
         <div class="flex items-center">
           <NuxtLink to="/" class="py-4">
-            <h1 class="text-2xl font-inika">CMS Template</h1>
+            <h1 class="text-2xl font-inika w-[161px]">CMS Template</h1>
           </NuxtLink>
         </div>
 

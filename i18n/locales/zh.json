@@ -8,5 +8,10 @@
   "Tags": "标签",
   "Latest_News": "最新新闻",
   "Up_Next": "接下来",
-  "Home": "首页"
+  "Home": "首页",
+  "not_found": {
+    "title": "内容加载失败",
+    "description": "服务器没有响应。请检查您的连接或重试。",
+    "back": "重试"
+  }
 }
