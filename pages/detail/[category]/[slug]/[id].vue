@@ -139,11 +139,18 @@ const copyLink = () => {
           </div>
 
           <div class="flex justify-between gap-2 mt-4">
-            <NuxtLink :to="`/category/${post.category?.slug}`">
+            <div class="flex items-center gap-2">
+            <NuxtLink :to="`/category/${post.category?.[0]?.slug}`">
               <span class="inline-flex items-center w-auto h-auto px-3 py-1 rounded-full text-[14px] bg-black text-white dark:bg-white dark:text-black wrap-break-word overflow-hidden">
                 {{ post.category?.[0]?.name || 'Tanpa Kategori' }}
               </span>
             </NuxtLink>
+            <NuxtLink v-for="sub in post.category?.[0]?.sub_categories" :key="sub.slug" :to="`/category/${sub.slug}`">
+              <span class="px-3 py-1 rounded-full text-[14px]  bg-black text-white dark:bg-white dark:text-black wrap-break-word overflow-hidden">
+                {{ sub.name }}
+              </span>
+            </NuxtLink>
+            </div>
             <div class="relative flex gap-2 h-9">
               <button @click="copyLink" class="px-2 border rounded-md dark:text-white dark:border-slate-700 text-xs hover:bg-gray-50 dark:hover:bg-slate-800 transition cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
