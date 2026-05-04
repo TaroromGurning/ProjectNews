@@ -206,7 +206,7 @@ const formatDate = (dateString) => {
           <div class="flex flex-col gap-5">
             <NuxtLink v-for="post in block.posts" :key="post.id" :to="`/detail/${post.category?.slug}/${post.slug}/${post.id}`" class="flex gap-4 items-start group cursor-pointer">
               
-              <div class="w-[180px] h-[120px] shrink-0 overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700">
+              <div class="w-28 h-20 lg:w-[180px] lg:h-[120px] shrink-0 overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700">
                 <img :src="post.featured_image || '/tes.png'" :alt="post.title" class="w-full h-full object-contain group-hover:scale-110 transition-transform">
               </div>
               <div class="flex flex-col min-w-0">
